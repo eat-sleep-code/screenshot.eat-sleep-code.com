@@ -35,15 +35,27 @@ export function removeSession(host) {
 	if (existsSync(file)) rmSync(file);
 }
 
+// Playwright's bundled Chromium sets --enable-automation and other flags
+// that expose navigator.webdriver, which Cloudflare Turnstile (and similar
+// bot-detection challenges) treat as a signal to fail the challenge even for
+// a real human clicking through a headed, hand-driven sign-in window. WebKit
+// has no equivalent flags/args to suppress.
+const CHROMIUM_LAUNCH_OPTIONS = {
+	ignoreDefaultArgs: ["--enable-automation"],
+	args: ["--disable-blink-features=AutomationControlled"],
+};
+
 /**
  * Opens a headed browser so the user can sign in by hand (SSO/MFA included),
  * then saves the resulting cookies/localStorage as this host's storageState.
  * Resolves once the user closes the window.
  */
-export async function signIn(url, engineName, ignoreHttpsErrors) {
+export async function signIn(url, engineName) {
 	const engine = engineFor(engineName);
-	const browser = await engine.launch({ headless: false });
-	const context = await browser.newContext({ ignoreHTTPSErrors: ignoreHttpsErrors });
+	const launchOptions =
+		engineName === "chromium" ? { headless: false, ...CHROMIUM_LAUNCH_OPTIONS } : { headless: false };
+	const browser = await engine.launch(launchOptions);
+	const context = await browser.newContext();
 	const page = await context.newPage();
 	await page.goto(url);
 
