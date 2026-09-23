@@ -1,6 +1,4 @@
-# Placeholder appId/publish config — swap in real values once Jeff confirms
-# the app's domain and GitHub repo (see CLAUDE.md "Open items").
-appId: com.eatsleepcode.devicescreenshot
+appId: com.eatsleepcode.screenshot
 productName: Device Screenshot Tool
 directories:
   buildResources: resources

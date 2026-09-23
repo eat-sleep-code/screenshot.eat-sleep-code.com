@@ -233,10 +233,14 @@
 			</ul>
 
 			<h3>Download</h3>
-			<a id="primary-download" class="primary-download" href="#" download>
-				Download for <span id="primary-os">your platform</span>
-			</a>
-			<div class="other-platforms" id="other-platforms"></div>
+			<div>
+				<div>
+					<a id="primary-download" class="primary-download" href="#" download>
+						<span id="primary-os">your platform</span>
+					</a>
+				</div>
+				<div class="other-platforms" id="other-platforms"></div>
+			</div>
 			<p class="meta-line" id="version-line">Checking latest release&hellip;</p>
 		</div>
 
@@ -256,14 +260,14 @@
 
 		const PLATFORMS = {
 			windows: { label: "Windows", match: (asset) => /\.exe$/i.test(asset.name) },
-			macos: { label: "macOS", match: (asset) => /\.dmg$/i.test(asset.name) },
+			//macos: { label: "macOS", match: (asset) => /\.dmg$/i.test(asset.name) }, // not yet available, so we don't want to show it as the primary download option
 			linux: { label: "Linux", match: (asset) => /\.AppImage$/i.test(asset.name) },
 		};
 
 		function detectOS() {
 			const ua = navigator.userAgent;
 			if (/Win/i.test(ua)) return "windows";
-			if (/Mac/i.test(ua)) return "macos";
+			//if (/Mac/i.test(ua)) return "macos"; // not yet available, so we don't want to show it as the primary download option
 			if (/Linux/i.test(ua)) return "linux";
 			return "windows";
 		}

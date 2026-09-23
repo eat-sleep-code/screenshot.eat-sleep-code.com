@@ -1,7 +1,8 @@
 {
 	"name": "device-screenshot-tool",
 	"productName": "Device Screenshot Tool",
-	"version": "0.1.0",
+	"author": "<eat-sleep-code />",
+	"version": "2026.09.23",
 	"description": "Capture screenshots of any website across device presets, including internal/intranet apps.",
 	"main": "./out/main/index.js",
 	"private": true,
@@ -22,7 +23,7 @@
 	"devDependencies": {
 		"@headlessui/react": "^2.2.10",
 		"@tailwindcss/vite": "^4.3.3",
-		"@vitejs/plugin-react": "^5.2.0",
+		"@vitejs/plugin-react": "^6.1.1",
 		"electron": "^44.4.5",
 		"electron-builder": "^26.15.3",
 		"electron-vite": "^5.0.0",
@@ -30,6 +31,6 @@
 		"react": "^19.3.0",
 		"react-dom": "^19.3.0",
 		"tailwindcss": "^4.3.3",
-		"vite": "^7.3.6"
+		"vite": "^8.3.0"
 	}
 }
