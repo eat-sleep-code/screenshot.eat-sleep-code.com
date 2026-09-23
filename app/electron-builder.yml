@@ -1,5 +1,17 @@
 appId: com.eatsleepcode.screenshot
 productName: Device Screenshot Tool
+# ${productName} (used in the default artifactName template) contains
+# spaces; electron-builder writes a hyphen-sanitized filename into
+# latest.yml/latest-linux.yml but otherwise names the actual output file
+# with real spaces. That's fine when electron-builder itself uploads the
+# release (it uploads under the sanitized name to match), but our CI
+# publishes with a plain `gh release create` instead (see build.yml — one
+# electron-builder process per OS can't safely publish to the same GitHub
+# release), and GitHub silently mangles spaces in uploaded asset names to
+# dots — neither the raw-spaces name nor GitHub's dotted name matches what
+# latest.yml points to, so electron-updater can't find the asset. ${name}
+# is package.json's name, already hyphenated, so there's nothing to mangle.
+artifactName: ${name}-${version}.${ext}
 directories:
   buildResources: resources
   output: dist
