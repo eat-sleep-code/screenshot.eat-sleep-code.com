@@ -35,15 +35,28 @@ export function removeSession(host) {
 	if (existsSync(file)) rmSync(file);
 }
 
-// Playwright's bundled Chromium sets --enable-automation and other flags
-// that expose navigator.webdriver, which Cloudflare Turnstile (and similar
-// bot-detection challenges) treat as a signal to fail the challenge even for
-// a real human clicking through a headed, hand-driven sign-in window. WebKit
-// has no equivalent flags/args to suppress.
+// Stripping --enable-automation (below) stops Chromium from setting
+// navigator.webdriver, but Cloudflare Turnstile (and similar bot-detection
+// challenges) also fingerprint Playwright's *bundled* Chromium build itself
+// — it's a "Chrome for Testing" binary, distinguishable from a real Chrome
+// install even with automation flags removed. WebKit has no equivalent
+// flags/args to suppress.
 const CHROMIUM_LAUNCH_OPTIONS = {
 	ignoreDefaultArgs: ["--enable-automation"],
 	args: ["--disable-blink-features=AutomationControlled"],
 };
+
+// For the manual sign-in window (a real person clicking through, once per
+// host) prefer the user's actual installed Chrome over Playwright's bundled
+// Chromium — a genuine Chrome binary passes Turnstile far more reliably.
+// Falls back to the bundled build if Chrome isn't installed on this machine.
+async function launchChromiumForSignIn(engine) {
+	try {
+		return await engine.launch({ channel: "chrome", headless: false, ...CHROMIUM_LAUNCH_OPTIONS });
+	} catch {
+		return engine.launch({ headless: false, ...CHROMIUM_LAUNCH_OPTIONS });
+	}
+}
 
 /**
  * Opens a headed browser so the user can sign in by hand (SSO/MFA included),
@@ -52,10 +65,15 @@ const CHROMIUM_LAUNCH_OPTIONS = {
  */
 export async function signIn(url, engineName) {
 	const engine = engineFor(engineName);
-	const launchOptions =
-		engineName === "chromium" ? { headless: false, ...CHROMIUM_LAUNCH_OPTIONS } : { headless: false };
-	const browser = await engine.launch(launchOptions);
+	const browser =
+		engineName === "chromium" ? await launchChromiumForSignIn(engine) : await engine.launch({ headless: false });
 	const context = await browser.newContext();
+	// Belt-and-suspenders: some Turnstile deployments check navigator.webdriver
+	// directly. --enable-automation already keeps it unset on launch, but this
+	// guards against it being forced true by other automation-detection paths.
+	await context.addInitScript(() => {
+		Object.defineProperty(navigator, "webdriver", { get: () => undefined });
+	});
 	const page = await context.newPage();
 	await page.goto(url);
 
