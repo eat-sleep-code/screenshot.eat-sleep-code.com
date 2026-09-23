@@ -23,14 +23,10 @@ const api = {
 		onProgress: (callback) => subscribe("capture:progress", callback),
 	},
 	session: {
-		signIn: (url, engine, ignoreHttpsErrors) => ipcRenderer.invoke("session:signIn", { url, engine, ignoreHttpsErrors }),
+		signIn: (url, engine) => ipcRenderer.invoke("session:signIn", { url, engine }),
 		list: () => ipcRenderer.invoke("session:list"),
 		has: (host) => ipcRenderer.invoke("session:has", host),
 		remove: (host) => ipcRenderer.invoke("session:remove", host),
-	},
-	settings: {
-		getIgnoreHttps: (host) => ipcRenderer.invoke("settings:getIgnoreHttps", host),
-		setIgnoreHttps: (host, value) => ipcRenderer.invoke("settings:setIgnoreHttps", host, value),
 	},
 	browsers: {
 		isInstalled: () => ipcRenderer.invoke("browsers:isInstalled"),

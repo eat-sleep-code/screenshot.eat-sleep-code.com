@@ -7,7 +7,6 @@ const STORE_PATH = join(app.getPath("userData"), "settings.json");
 const DEFAULTS = {
 	customPresets: [],
 	lastOutputDir: null,
-	ignoreHttpsHosts: [],
 };
 
 function readStore() {

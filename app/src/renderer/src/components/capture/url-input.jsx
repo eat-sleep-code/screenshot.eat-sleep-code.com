@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { LogIn, ShieldAlert, Trash2 } from "lucide-react";
+import { LogIn, Trash2 } from "lucide-react";
 import { useTranslation } from "../../hooks/use-translation.jsx";
 
 function isValidHttpUrl(value) {
@@ -14,8 +14,6 @@ function isValidHttpUrl(value) {
 export default function UrlInput({
 	url,
 	onUrlChange,
-	ignoreHttps,
-	onIgnoreHttpsChange,
 	sessionHost,
 	onSignIn,
 	onForgetSession,
@@ -72,24 +70,6 @@ export default function UrlInput({
 					</button>
 				</div>
 			) : null}
-
-			<label className="mt-3 flex items-start gap-2 text-sm">
-				<input
-					type="checkbox"
-					className="mt-0.5 h-4 w-4"
-					checked={ignoreHttps}
-					onChange={(event) => onIgnoreHttpsChange(event.target.checked)}
-				/>
-				<span>
-					{t("urlInput.ignoreHttps")}
-					{ignoreHttps ? (
-						<span className="mt-1 flex items-start gap-1.5 text-xs text-amber-600 dark:text-amber-400">
-							<ShieldAlert size={14} className="mt-0.5 shrink-0" aria-hidden="true" />
-							{t("urlInput.ignoreHttpsWarning")}
-						</span>
-					) : null}
-				</span>
-			</label>
 		</div>
 	);
 }

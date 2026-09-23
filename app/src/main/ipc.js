@@ -6,7 +6,7 @@ import { listPresets, addPreset, updatePreset, deletePreset } from "./presets.js
 import { runCapture } from "./capture.js";
 import { signIn, listSessions, removeSession, hasSession } from "./sessions.js";
 import { areBrowsersInstalled, installBrowsers } from "./browsers.js";
-import { getSetting, setSetting, updateSetting } from "./store.js";
+import { getSetting, setSetting } from "./store.js";
 import { isValidUrl, isValidCaptureRequest, isValidPresetDefinition, isValidHost } from "./validate.js";
 
 function badRequest(message) {
@@ -58,10 +58,10 @@ export function registerIpcHandlers(getMainWindow) {
 		);
 	});
 
-	ipcMain.handle("session:signIn", async (_event, { url, engine, ignoreHttpsErrors }) => {
+	ipcMain.handle("session:signIn", async (_event, { url, engine }) => {
 		if (!isValidUrl(url)) badRequest("url");
 		if (engine !== "chromium" && engine !== "webkit") badRequest("engine");
-		return signIn(url, engine, Boolean(ignoreHttpsErrors));
+		return signIn(url, engine);
 	});
 
 	ipcMain.handle("session:list", () => listSessions());
@@ -74,18 +74,6 @@ export function registerIpcHandlers(getMainWindow) {
 	ipcMain.handle("session:remove", (_event, host) => {
 		if (!isValidHost(host)) badRequest("host");
 		removeSession(host);
-	});
-
-	ipcMain.handle("settings:getIgnoreHttps", (_event, host) => {
-		if (!isValidHost(host)) badRequest("host");
-		return (getSetting("ignoreHttpsHosts") ?? []).includes(host);
-	});
-
-	ipcMain.handle("settings:setIgnoreHttps", (_event, host, value) => {
-		if (!isValidHost(host)) badRequest("host");
-		updateSetting("ignoreHttpsHosts", (hosts = []) =>
-			value ? [...new Set([...hosts, host])] : hosts.filter((h) => h !== host)
-		);
 	});
 
 	ipcMain.handle("browsers:isInstalled", () => areBrowsersInstalled());

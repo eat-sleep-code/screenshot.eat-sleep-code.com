@@ -43,7 +43,6 @@ export function isValidCaptureRequest(request) {
 	if (typeof options.fullPage !== "boolean") return false;
 	if (typeof options.scrollThrough !== "boolean") return false;
 	if (!Number.isFinite(options.settleDelayMs) || options.settleDelayMs < 0 || options.settleDelayMs > 60000) return false;
-	if (typeof options.ignoreHttpsErrors !== "boolean") return false;
 	if (options.injectCss != null && typeof options.injectCss !== "string") return false;
 	if (options.injectJs != null && typeof options.injectJs !== "string") return false;
 	return true;

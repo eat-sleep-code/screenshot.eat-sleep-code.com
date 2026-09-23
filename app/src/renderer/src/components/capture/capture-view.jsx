@@ -12,7 +12,6 @@ const DEFAULT_OPTIONS = {
 	fullPage: false,
 	scrollThrough: false,
 	settleDelayMs: 500,
-	ignoreHttpsErrors: false,
 	injectCss: "",
 	injectJs: "",
 };
@@ -52,9 +51,6 @@ export default function CaptureView() {
 			return;
 		}
 		window.deviceScreenshotApi.session.has(host).then((has) => setSessionHost(has ? host : null));
-		window.deviceScreenshotApi.settings.getIgnoreHttps(host).then((ignore) =>
-			setOptions((current) => ({ ...current, ignoreHttpsErrors: ignore }))
-		);
 	}, [url]);
 
 	async function handleSignIn() {
@@ -62,7 +58,7 @@ export default function CaptureView() {
 		try {
 			const preset = presets.find((candidate) => selections.some((s) => s.presetId === candidate.id)) ?? presets[0];
 			const engine = preset?.engine ?? "chromium";
-			const host = await window.deviceScreenshotApi.session.signIn(url, engine, options.ignoreHttpsErrors);
+			const host = await window.deviceScreenshotApi.session.signIn(url, engine);
 			setSessionHost(host);
 		} finally {
 			setSigningIn(false);
@@ -73,16 +69,6 @@ export default function CaptureView() {
 		if (!sessionHost) return;
 		await window.deviceScreenshotApi.session.remove(sessionHost);
 		setSessionHost(null);
-	}
-
-	async function handleIgnoreHttpsChange(value) {
-		setOptions((current) => ({ ...current, ignoreHttpsErrors: value }));
-		try {
-			const host = new URL(url).host;
-			await window.deviceScreenshotApi.settings.setIgnoreHttps(host, value);
-		} catch {
-			// URL not valid yet; nothing to persist
-		}
 	}
 
 	async function handleChooseFolder() {
@@ -128,8 +114,6 @@ export default function CaptureView() {
 			<UrlInput
 				url={url}
 				onUrlChange={setUrl}
-				ignoreHttps={options.ignoreHttpsErrors}
-				onIgnoreHttpsChange={handleIgnoreHttpsChange}
 				sessionHost={sessionHost}
 				onSignIn={handleSignIn}
 				onForgetSession={handleForgetSession}

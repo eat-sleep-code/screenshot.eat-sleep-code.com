@@ -69,7 +69,6 @@ export async function runCapture({ url, selections, presets, outputDir, options 
 					isMobile: preset.isMobile,
 					hasTouch: preset.hasTouch,
 					userAgent: preset.userAgent || undefined,
-					ignoreHTTPSErrors: options.ignoreHttpsErrors,
 					storageState,
 				});
 
