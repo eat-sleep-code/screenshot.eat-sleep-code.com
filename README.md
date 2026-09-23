@@ -8,7 +8,7 @@ See [`CLAUDE.md`](CLAUDE.md) for the full brief and decisions log.
 
 ```
 /app    Electron desktop app (electron-vite: main / preload / renderer) — see app/README.md
-/site   Simple static download page, published via GitHub Pages from /site/docs
+/docs   Simple static download page, published via GitHub Pages (must live at repo root — see docs/README.md)
 ```
 
 ## Open items

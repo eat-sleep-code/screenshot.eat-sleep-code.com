@@ -8,7 +8,9 @@ Follow the **eat-sleep-code-react** skill for all React work. Verify guidance by
 
 ```
 /app    Electron desktop app (electron-vite: main / preload / renderer)
-/site   Download landing page (Vite + React, Cloudflare Pages)
+/docs   Download landing page — single static HTML page, published via GitHub Pages.
+        Lives at repo root (not /site/docs) because that's one of only two folders
+        GitHub Pages' branch-deploy option supports. See docs/README.md.
 ```
 
 ## Decisions already made
@@ -72,7 +74,7 @@ Anything beyond this list or the skill's pre-approved list needs Jeff's sign-off
 
 ## House-style applicability
 
-**Applies to /app renderer and /site:**
+**Applies to /app renderer:**
 - Translations in `/src/translations/en-US.jsx`.
 - Light and dark mode; /app follows the OS via `nativeTheme`.
 - Accessibility.
@@ -88,19 +90,21 @@ Anything beyond this list or the skill's pre-approved list needs Jeff's sign-off
 - Cloudflare `_middleware`.
 - Legal-route modals. Put Privacy/Terms links in an About screen instead.
 
-**/site is a normal house-style Cloudflare Pages project:**
-- Full checklist applies, including footer, legal modals and routes, `_headers`, service worker, manifest, and meta tags.
+**/docs is deliberately simple, not a house-style Cloudflare Pages project (override, decided in chat):**
+- Single static HTML file, no build step, no React/Tailwind/Vite — same pattern as `skills.eat-sleep-code.com`.
+- No service worker, manifest, `_headers`, or legal-route modals; footer has plain Privacy/Terms links instead.
+- Published via GitHub Pages (branch deploy from `/docs` at repo root), not Cloudflare Pages.
 
-## Download site (/site)
+## Download site (/docs)
 
 - A single page covering what the app does, screenshots, and download buttons.
 - Detect the visitor's OS and highlight the matching installer (Windows, macOS, Linux), with the others listed below it.
-- Proposed, pending Jeff's confirmation: installers are hosted on GitHub Releases. electron-builder publishes there and electron-updater reads from it, so the site links to the latest release assets.
+- Installers are hosted on GitHub Releases (confirmed): electron-builder publishes there and electron-updater reads from it, so the site links to the latest release assets via the GitHub API client-side.
 - Show the version number and release notes link.
 
 ## Open items (ask Jeff)
 
-- Domain for /site: confirmed as `screenshot.eat-sleep-code.com`. App display name still TBD (code currently uses "Device Screenshot Tool" as a placeholder).
+- Domain for /docs: confirmed as `screenshot.eat-sleep-code.com`. App display name still TBD (code currently uses "Device Screenshot Tool" as a placeholder).
 - GitHub Releases as the host for installers and updates: confirmed, using the same repo as the app code (`eat-sleep-code/screenshot.eat-sleep-code.com`), same pattern as `skills.eat-sleep-code.com`.
 - Code-signing certificates:
 	- Apple Developer ID with notarization.
