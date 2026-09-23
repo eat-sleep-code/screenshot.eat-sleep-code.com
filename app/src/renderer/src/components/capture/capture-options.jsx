@@ -1,3 +1,4 @@
+import { ChevronRight } from "lucide-react";
 import { useTranslation } from "../../hooks/use-translation.jsx";
 
 export default function CaptureOptions({ options, onChange }) {
@@ -8,9 +9,12 @@ export default function CaptureOptions({ options, onChange }) {
 	}
 
 	return (
-		<div>
-			<h2 className="text-sm font-semibold mb-2">{t("options.title")}</h2>
-			<div className="space-y-3">
+		<details className="group">
+			<summary className="flex cursor-pointer list-none items-center gap-1.5 text-sm font-semibold mb-2 select-none">
+				<ChevronRight size={16} className="transition-transform group-open:rotate-90" aria-hidden="true" />
+				{t("options.title")}
+			</summary>
+			<div className="space-y-3 pl-1">
 				<label className="flex items-center gap-2 text-sm">
 					<input
 						type="checkbox"
@@ -78,6 +82,6 @@ export default function CaptureOptions({ options, onChange }) {
 					/>
 				</div>
 			</div>
-		</div>
+		</details>
 	);
 }
