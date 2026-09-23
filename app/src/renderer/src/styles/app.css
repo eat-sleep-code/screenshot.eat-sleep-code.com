@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+/* Class-based dark mode: toggled on <html> from the main process's
+   nativeTheme signal (see hooks/use-theme.jsx), so it follows the OS
+   without depending solely on the prefers-color-scheme media query. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+	--color-accent: #00bcd4;
+	--color-accent-hover: #00d4e4;
+}
+
+html,
+body,
+#root {
+	height: 100%;
+}
+
+.btn {
+	@apply inline-flex items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-colors min-h-11 disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.btn-primary {
+	@apply bg-cyan-600 text-white hover:bg-cyan-500 dark:bg-cyan-500 dark:hover:bg-cyan-400;
+}
+
+.btn-secondary {
+	@apply bg-neutral-100 text-neutral-900 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-100 dark:hover:bg-neutral-700;
+}
+
+.btn-tertiary {
+	@apply bg-transparent text-neutral-600 hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800;
+}
+
+.field-label {
+	@apply block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1;
+}
+
+.field-input {
+	@apply w-full rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500;
+}
+
+/* Scrollbars, light + dark */
+* {
+	scrollbar-width: thin;
+	scrollbar-color: #cbd5e1 transparent;
+}
+
+.dark * {
+	scrollbar-color: #3f3f46 transparent;
+}

@@ -1,0 +1,13 @@
+# app/ (Electron) build output
+app/out/
+app/dist/
+
+# dependencies
+node_modules/
+
+# Playwright browser cache, if ever downloaded into the repo by accident
+app/data/browsers/
+
+# OS cruft
+.DS_Store
+Thumbs.db

@@ -1,0 +1,35 @@
+{
+	"name": "device-screenshot-tool",
+	"productName": "Device Screenshot Tool",
+	"version": "0.1.0",
+	"description": "Capture screenshots of any website across device presets, including internal/intranet apps.",
+	"main": "./out/main/index.js",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "electron-vite dev",
+		"build": "electron-vite build",
+		"start": "electron-vite preview",
+		"dist:win": "npm run build && electron-builder --win",
+		"dist:mac": "npm run build && electron-builder --mac",
+		"dist:linux": "npm run build && electron-builder --linux",
+		"postinstall": "electron-builder install-app-deps"
+	},
+	"dependencies": {
+		"electron-updater": "^6.8.9",
+		"playwright": "^1.63.0"
+	},
+	"devDependencies": {
+		"@headlessui/react": "^2.2.10",
+		"@tailwindcss/vite": "^4.3.3",
+		"@vitejs/plugin-react": "^5.2.0",
+		"electron": "^44.4.5",
+		"electron-builder": "^26.15.3",
+		"electron-vite": "^5.0.0",
+		"lucide-react": "^1.47.0",
+		"react": "^19.3.0",
+		"react-dom": "^19.3.0",
+		"tailwindcss": "^4.3.3",
+		"vite": "^7.3.6"
+	}
+}

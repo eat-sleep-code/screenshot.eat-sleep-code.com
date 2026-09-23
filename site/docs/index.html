@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Device Screenshot Tool — capture screenshots of any website, including internal apps, across real device presets">
+	<meta name="theme-color" content="#0a0e27">
+	<title>Device Screenshot Tool</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		body {
+			background: #0d1117;
+			color: #e6edf3;
+			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+			line-height: 1.6;
+			min-height: 100vh;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 20px;
+		}
+
+		.container {
+			max-width: 760px;
+			width: 100%;
+			animation: fadeIn 0.8s ease-out;
+		}
+
+		@keyframes fadeIn {
+			from {
+				opacity: 0;
+				transform: translateY(20px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+
+		.header {
+			margin-bottom: 2.5rem;
+			text-align: center;
+		}
+
+		.logo {
+			font-size: 2rem;
+			font-weight: 700;
+			margin-bottom: 0.5rem;
+			color: #FFFFFF;
+			letter-spacing: -1px;
+		}
+
+		.subtitle {
+			font-size: 0.95rem;
+			color: #8b949e;
+			font-weight: 500;
+			letter-spacing: 0.5px;
+			text-transform: uppercase;
+		}
+
+		.content-box {
+			background: #161b22;
+			border: 1px solid #30363d;
+			border-radius: 6px;
+			padding: 3rem;
+			box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+		}
+
+		h2 {
+			font-size: 1.8rem;
+			margin-bottom: 1.5rem;
+			color: #00bcd4;
+			font-weight: 600;
+		}
+
+		h3 {
+			font-size: 1.1rem;
+			margin: 2rem 0 1rem;
+			color: #e6edf3;
+			font-weight: 600;
+		}
+
+		p {
+			margin-bottom: 1.5rem;
+			color: #c9d1d9;
+			font-size: 1rem;
+			line-height: 1.8;
+		}
+
+		p:last-of-type {
+			margin-bottom: 2rem;
+		}
+
+		ul.features {
+			list-style: none;
+			margin-bottom: 2rem;
+			color: #c9d1d9;
+		}
+
+		ul.features li {
+			padding: 0.35rem 0 0.35rem 1.4rem;
+			position: relative;
+		}
+
+		ul.features li::before {
+			content: "\2192";
+			position: absolute;
+			left: 0;
+			color: #00bcd4;
+		}
+
+		.primary-download {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			padding: 12px 28px;
+			background: #00bcd4;
+			color: #0d1117;
+			text-decoration: none;
+			border-radius: 6px;
+			font-weight: 600;
+			font-size: 0.95rem;
+			border: none;
+			cursor: pointer;
+			transition: all 0.2s ease;
+			box-shadow: 0 4px 12px rgba(0, 188, 212, 0.2);
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+		}
+
+		.primary-download:hover {
+			background: #00d4e4;
+			transform: translateY(-1px);
+			box-shadow: 0 6px 16px rgba(0, 188, 212, 0.3);
+		}
+
+		.primary-download:active {
+			transform: translateY(0);
+			box-shadow: 0 2px 8px rgba(0, 188, 212, 0.2);
+		}
+
+		.other-platforms {
+			margin-top: 1.25rem;
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.75rem;
+		}
+
+		.other-platforms a {
+			color: #8b949e;
+			text-decoration: none;
+			font-size: 0.85rem;
+			border: 1px solid #30363d;
+			border-radius: 6px;
+			padding: 8px 14px;
+			transition: all 0.2s ease;
+		}
+
+		.other-platforms a:hover {
+			color: #00bcd4;
+			border-color: #00bcd4;
+		}
+
+		.meta-line {
+			margin-top: 1.5rem;
+			font-size: 0.85rem;
+			color: #6e7681;
+		}
+
+		.meta-line a {
+			color: #00bcd4;
+			text-decoration: none;
+		}
+
+		.meta-line a:hover {
+			color: #00d4e4;
+		}
+
+		.footer {
+			text-align: center;
+			margin-top: 3rem;
+			color: #6e7681;
+			font-size: 0.9rem;
+		}
+
+		.footer a {
+			color: #00bcd4;
+			text-decoration: none;
+			transition: color 0.2s ease;
+		}
+
+		.footer a:hover {
+			color: #00d4e4;
+		}
+
+		@media (max-width: 600px) {
+			.content-box {
+				padding: 2rem;
+			}
+
+			.logo {
+				font-size: 2rem;
+			}
+
+			h2 {
+				font-size: 1.4rem;
+			}
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="header">
+			<div class="logo">&lt;eat-sleep-code /&gt; Apps</div>
+		</div>
+		<div class="content-box">
+			<h2>Device Screenshot Tool</h2>
+
+			<p>
+				A desktop app that captures screenshots of any website — including internal, VPN-only, and localhost apps — across a full set of device presets: current iPhones, Pixels, Galaxy and Pixel foldables, and a handful of desktop/tablet sizes.
+			</p>
+
+			<ul class="features">
+				<li>Runs on your machine, so intranet, staging, and localhost URLs are reachable</li>
+				<li>Portrait and landscape, viewport-only or full-page capture</li>
+				<li>Sign in once per internal app; the session is reused for future captures</li>
+				<li>Custom device presets, alongside the built-in list</li>
+			</ul>
+
+			<h3>Download</h3>
+			<a id="primary-download" class="primary-download" href="#" download>
+				Download for <span id="primary-os">your platform</span>
+			</a>
+			<div class="other-platforms" id="other-platforms"></div>
+			<p class="meta-line" id="version-line">Checking latest release&hellip;</p>
+		</div>
+
+		<div class="footer">
+			&copy; <script>document.write(new Date().getFullYear());</script> &lt;eat-sleep-code.com&gt;.  All rights reserved.
+			&nbsp;|&nbsp;
+			<a href="https://eat-sleep-code.com/privacy" target="_blank">Privacy Policy</a>
+			&nbsp;|&nbsp;
+			<a href="https://eat-sleep-code.com/terms-of-use" target="_blank">Terms of Use</a>
+		</div>
+	</div>
+
+	<script>
+		// GitHub repo that publishes installers via electron-builder + electron-updater.
+		// Placeholder until Jeff confirms the app's GitHub repo (see CLAUDE.md open items).
+		const REPO = "eat-sleep-code/screenshot.eat-sleep-code.com";
+
+		const PLATFORMS = {
+			windows: { label: "Windows", match: (asset) => /\.exe$/i.test(asset.name) },
+			macos: { label: "macOS", match: (asset) => /\.dmg$/i.test(asset.name) },
+			linux: { label: "Linux", match: (asset) => /\.AppImage$/i.test(asset.name) },
+		};
+
+		function detectOS() {
+			const ua = navigator.userAgent;
+			if (/Win/i.test(ua)) return "windows";
+			if (/Mac/i.test(ua)) return "macos";
+			if (/Linux/i.test(ua)) return "linux";
+			return "windows";
+		}
+
+		function pickAsset(assets, platformKey) {
+			return assets.find(PLATFORMS[platformKey].match);
+		}
+
+		async function loadRelease() {
+			const versionLine = document.getElementById("version-line");
+			const primaryLink = document.getElementById("primary-download");
+			const primaryOsLabel = document.getElementById("primary-os");
+			const otherPlatforms = document.getElementById("other-platforms");
+			const osKey = detectOS();
+			primaryOsLabel.textContent = PLATFORMS[osKey].label;
+
+			try {
+				const res = await fetch(`https://api.github.com/repos/${REPO}/releases/latest`);
+				if (!res.ok) throw new Error("no releases yet");
+				const release = await res.json();
+				const assets = release.assets || [];
+
+				const primaryAsset = pickAsset(assets, osKey);
+				if (primaryAsset) {
+					primaryLink.href = primaryAsset.browser_download_url;
+				} else {
+					primaryLink.href = release.html_url;
+				}
+
+				Object.keys(PLATFORMS).forEach((key) => {
+					if (key === osKey) return;
+					const asset = pickAsset(assets, key);
+					const a = document.createElement("a");
+					a.textContent = PLATFORMS[key].label;
+					a.href = asset ? asset.browser_download_url : release.html_url;
+					if (asset) a.setAttribute("download", "");
+					otherPlatforms.appendChild(a);
+				});
+
+				versionLine.innerHTML = `Version ${release.tag_name} &middot; <a href="${release.html_url}" target="_blank">release notes</a>`;
+			} catch (err) {
+				versionLine.textContent = "No release published yet.";
+				primaryLink.href = `https://github.com/${REPO}/releases`;
+				Object.keys(PLATFORMS).forEach((key) => {
+					if (key === osKey) return;
+					const a = document.createElement("a");
+					a.textContent = PLATFORMS[key].label;
+					a.href = `https://github.com/${REPO}/releases`;
+					otherPlatforms.appendChild(a);
+				});
+			}
+		}
+
+		loadRelease();
+	</script>
+</body>
+</html>

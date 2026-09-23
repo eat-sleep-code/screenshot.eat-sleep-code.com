@@ -1,0 +1,37 @@
+# Placeholder appId/publish config — swap in real values once Jeff confirms
+# the app's domain and GitHub repo (see CLAUDE.md "Open items").
+appId: com.eatsleepcode.devicescreenshot
+productName: Device Screenshot Tool
+directories:
+  buildResources: resources
+  output: dist
+files:
+  - out/**/*
+  - package.json
+asarUnpack:
+  - node_modules/playwright/**
+  - node_modules/playwright-core/**
+extraResources:
+  - from: data/presets.json
+    to: presets.json
+win:
+  target:
+    - nsis
+  # Requires a Windows code-signing certificate — unsigned builds show a
+  # SmartScreen warning. See CLAUDE.md open items.
+mac:
+  target:
+    - dmg
+  category: public.app-category.developer-tools
+  hardenedRuntime: true
+  gatekeeperAssess: false
+  # Requires an Apple Developer ID + notarization credentials in env vars
+  # (APPLE_ID / APPLE_APP_SPECIFIC_PASSWORD / APPLE_TEAM_ID). See CLAUDE.md open items.
+linux:
+  target:
+    - AppImage
+  category: Development
+publish:
+  provider: github
+  owner: eat-sleep-code
+  repo: screenshot.eat-sleep-code.com
