@@ -3,7 +3,6 @@ name: Build
 on:
   push:
     branches: [main]
-    tags: ["v*"]
   pull_request:
     branches: [main]
   workflow_dispatch: {}
@@ -38,10 +37,33 @@ jobs:
 
       - run: npm run build
 
-  # Runs only on a version tag push (e.g. git tag v0.2.0 && git push --tags):
-  # packages a native installer per OS and publishes them to this repo's
-  # GitHub Releases, which electron-updater reads from and the download
-  # site (/docs) links to.
+  # Every push to main gets its own release — no `git tag` step needed.
+  # Version is YYYY.M.D-H (UTC, unpadded month/day/hour, e.g. 2026.9.23-14):
+  # a bare 4th dot segment isn't valid semver (electron-builder enforces
+  # this — see git history for the leading-zero version this same
+  # constraint already caught once), so the hour rides as semver
+  # prerelease metadata after a hyphen instead of a 4th dot segment.
+  # Two pushes in the same UTC hour intentionally produce the same
+  # version/tag — the second just overwrites the first's release.
+  version:
+    name: Compute version
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: verify
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.compute.outputs.version }}
+      tag: ${{ steps.compute.outputs.tag }}
+    steps:
+      - name: Compute version
+        id: compute
+        run: |
+          VERSION="$(date -u +'%Y.%-m.%-d-%-H')"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
+
+  # Packages a native installer per OS and publishes it to this repo's
+  # GitHub Releases (electron-updater reads from there, and the download
+  # site at /docs links to whatever /releases/latest returns).
   #
   # Code signing is optional here: electron-builder skips it when the
   # matching secrets aren't set, producing an unsigned build (OS security
@@ -52,8 +74,7 @@ jobs:
   #   APPLE_ID / APPLE_APP_SPECIFIC_PASSWORD / APPLE_TEAM_ID — for notarization
   package:
     name: Package (${{ matrix.os }})
-    if: startsWith(github.ref, 'refs/tags/v')
-    needs: verify
+    needs: version
     strategy:
       fail-fast: false
       matrix:
@@ -90,7 +111,9 @@ jobs:
       - run: npm run build
 
       - name: Package and publish
-        run: npx electron-builder ${{ matrix.target }} --publish always
+        # extraMetadata.version overrides package.json's version for this
+        # build/publish only — nothing gets committed back to the repo.
+        run: npx electron-builder ${{ matrix.target }} --publish always -c.extraMetadata.version=${{ needs.version.outputs.version }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CSC_LINK: ${{ matrix.os == 'windows-latest' && secrets.WIN_CSC_LINK || matrix.os == 'macos-latest' && secrets.MAC_CSC_LINK || '' }}
@@ -98,3 +121,28 @@ jobs:
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+
+  # With a release published on every push, the Releases page would
+  # otherwise accumulate one entry per commit forever. Once this push's
+  # release is up (both OS legs done), unpublish every other release —
+  # i.e. flip it to draft, not delete it — so /releases/latest (and the
+  # download site) only ever sees today's-push-this-hour as "latest",
+  # while older builds/assets stay around, just hidden from the public list.
+  cleanup:
+    name: Unpublish prior releases
+    needs: [version, package]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Unpublish everything except this push's release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEEP_TAG: ${{ needs.version.outputs.tag }}
+        run: |
+          gh release list --repo "$GITHUB_REPOSITORY" --limit 200 --json tagName,isDraft \
+            --jq ".[] | select(.tagName != \"$KEEP_TAG\" and .isDraft == false) | .tagName" |
+          while read -r tag; do
+            echo "Unpublishing $tag"
+            gh release edit "$tag" --repo "$GITHUB_REPOSITORY" --draft
+          done
