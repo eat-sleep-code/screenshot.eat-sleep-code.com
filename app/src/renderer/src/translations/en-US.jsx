@@ -57,6 +57,9 @@ export default {
 	capture: {
 		start: "Capture screenshots",
 		starting: "Starting…",
+		tabSetup: "Setup",
+		tabDownloading: "Downloading",
+		tabResults: "Results",
 		progressTitle: "Progress",
 		resultsTitle: "Results",
 		statusLoading: "Loading",

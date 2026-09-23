@@ -28,6 +28,7 @@ export default function CaptureView() {
 	const [capturing, setCapturing] = useState(false);
 	const [progressItems, setProgressItems] = useState([]);
 	const [results, setResults] = useState([]);
+	const [activeStage, setActiveStage] = useState("setup");
 
 	const loadPresets = useCallback(() => {
 		window.deviceScreenshotApi.presets.list().then(setPresets);
@@ -80,6 +81,7 @@ export default function CaptureView() {
 		if (!outputDir || selections.length === 0) return;
 		setCapturing(true);
 		setResults([]);
+		setActiveStage("downloading");
 		setProgressItems(
 			selections.map((selection) => {
 				const preset = presets.find((p) => p.id === selection.presetId);
@@ -101,6 +103,7 @@ export default function CaptureView() {
 				options,
 			});
 			setResults(outcome);
+			if (outcome.some((result) => result.ok)) setActiveStage("results");
 		} finally {
 			unsubscribe();
 			setCapturing(false);
@@ -109,37 +112,67 @@ export default function CaptureView() {
 
 	const canCapture = Boolean(url) && selections.length > 0 && Boolean(outputDir) && !capturing;
 
+	const STAGES = [
+		{ id: "setup", labelKey: "capture.tabSetup" },
+		{ id: "downloading", labelKey: "capture.tabDownloading", disabled: progressItems.length === 0 },
+		{ id: "results", labelKey: "capture.tabResults", disabled: results.length === 0 },
+	];
+
 	return (
-		<div className="mx-auto max-w-3xl space-y-8">
-			<UrlInput
-				url={url}
-				onUrlChange={setUrl}
-				sessionHost={sessionHost}
-				onSignIn={handleSignIn}
-				onForgetSession={handleForgetSession}
-				signingIn={signingIn}
-			/>
-
-			<PresetPicker
-				presets={presets}
-				selections={selections}
-				onSelectionsChange={setSelections}
-				onPresetsChanged={loadPresets}
-			/>
-
-			<CaptureOptions options={options} onChange={setOptions} />
-
-			<OutputFolder outputDir={outputDir} onChoose={handleChooseFolder} />
-
-			<div>
-				<button type="button" className="btn btn-primary" disabled={!canCapture} onClick={handleCapture}>
-					{capturing ? <Loader2 size={16} className="animate-spin" aria-hidden="true" /> : <Camera size={16} aria-hidden="true" />}
-					{capturing ? t("capture.starting") : t("capture.start")}
-				</button>
+		<div className="mx-auto max-w-3xl space-y-6">
+			<div className="flex gap-1 border-b border-neutral-200 dark:border-neutral-800" role="tablist">
+				{STAGES.map((stage) => (
+					<button
+						key={stage.id}
+						type="button"
+						role="tab"
+						aria-selected={activeStage === stage.id}
+						disabled={stage.disabled}
+						className={`px-3 py-2 text-sm font-medium border-b-2 -mb-px transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
+							activeStage === stage.id
+								? "border-cyan-600 text-cyan-700 dark:border-cyan-400 dark:text-cyan-300"
+								: "border-transparent text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100"
+						}`}
+						onClick={() => setActiveStage(stage.id)}
+					>
+						{t(stage.labelKey)}
+					</button>
+				))}
 			</div>
 
-			<ProgressList items={progressItems} />
-			<ThumbnailGallery results={results} />
+			{activeStage === "setup" ? (
+				<div className="space-y-8">
+					<UrlInput
+						url={url}
+						onUrlChange={setUrl}
+						sessionHost={sessionHost}
+						onSignIn={handleSignIn}
+						onForgetSession={handleForgetSession}
+						signingIn={signingIn}
+					/>
+
+					<PresetPicker
+						presets={presets}
+						selections={selections}
+						onSelectionsChange={setSelections}
+						onPresetsChanged={loadPresets}
+					/>
+
+					<CaptureOptions options={options} onChange={setOptions} />
+
+					<OutputFolder outputDir={outputDir} onChoose={handleChooseFolder} />
+
+					<div>
+						<button type="button" className="btn btn-primary" disabled={!canCapture} onClick={handleCapture}>
+							{capturing ? <Loader2 size={16} className="animate-spin" aria-hidden="true" /> : <Camera size={16} aria-hidden="true" />}
+							{capturing ? t("capture.starting") : t("capture.start")}
+						</button>
+					</div>
+				</div>
+			) : null}
+
+			{activeStage === "downloading" ? <ProgressList items={progressItems} /> : null}
+			{activeStage === "results" ? <ThumbnailGallery results={results} /> : null}
 		</div>
 	);
 }
