@@ -34,9 +34,11 @@ publish:
   provider: github
   owner: eat-sleep-code
   repo: screenshot.eat-sleep-code.com
-  # electron-builder defaults to draft releases. The download site reads
-  # GitHub's /releases/latest endpoint, which never returns drafts or
-  # prereleases (even to the owner, unauthenticated) — so a draft release
-  # silently never shows up there. Publish immediately instead.
-  draft: false
-  prerelease: false
+  # electron-builder defaults releaseType to "draft". The download site
+  # reads GitHub's /releases/latest endpoint, which never returns drafts
+  # or prereleases (even to the owner, unauthenticated) — so a draft
+  # release silently never shows up there. Publish immediately instead.
+  # (Note: GithubOptions has no separate draft/prerelease booleans —
+  # only this one releaseType enum; additionalProperties is false on
+  # this schema, so any other key name fails validation entirely.)
+  releaseType: release

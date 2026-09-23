@@ -120,9 +120,13 @@ jobs:
       - run: npm run build
 
       - name: Package and publish
-        # extraMetadata.version overrides package.json's version for this
-        # build/publish only — nothing gets committed back to the repo.
-        run: npx electron-builder ${{ matrix.target }} --publish always -c.extraMetadata.version=${{ needs.version.outputs.version }}
+        # --config.extraMetadata.version overrides package.json's version
+        # for this build/publish only — nothing gets committed back to the
+        # repo. Use the full "--config." form, not the "-c." short alias:
+        # on the Windows runner, "-c.extraMetadata.version=X" was parsed as
+        # -c (config) taking the literal string ".extraMetadata.version=X"
+        # as a file path, which then failed with ENOENT.
+        run: npx electron-builder ${{ matrix.target }} --publish always --config.extraMetadata.version=${{ needs.version.outputs.version }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CSC_LINK: ${{ matrix.os == 'windows-latest' && secrets.WIN_CSC_LINK || matrix.os == 'macos-latest' && secrets.MAC_CSC_LINK || '' }}
