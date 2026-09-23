@@ -38,13 +38,19 @@ jobs:
       - run: npm run build
 
   # Every push to main gets its own release — no `git tag` step needed.
-  # Version is YYYY.M.D-H (UTC, unpadded month/day/hour, e.g. 2026.9.23-14):
-  # a bare 4th dot segment isn't valid semver (electron-builder enforces
-  # this — see git history for the leading-zero version this same
-  # constraint already caught once), so the hour rides as semver
-  # prerelease metadata after a hyphen instead of a 4th dot segment.
-  # Two pushes in the same UTC hour intentionally produce the same
-  # version/tag — the second just overwrites the first's release.
+  # Version is YYYY.M.D-HM (UTC, unpadded month/day, e.g. 2026.9.23-1405
+  # for 14:05). HM is hour*100+minute as plain arithmetic, not
+  # hour-then-padded-minute concatenated as text: concatenating text would
+  # reintroduce a leading zero for any hour-0 push (e.g. "0" + "05" ->
+  # "005", invalid), since semver numeric identifiers can't start with 0.
+  # The arithmetic form has no such case — 0:05 is just 5 — and still
+  # increases strictly through the day, so ordering stays correct.
+  # A bare 4th dot segment isn't valid semver at all (electron-builder
+  # enforces this — see git history for the leading-zero version this
+  # same constraint already caught once), so HM rides as semver
+  # prerelease metadata after a hyphen instead. Two pushes in the same
+  # UTC minute intentionally produce the same version/tag — the second
+  # just overwrites the first's release.
   version:
     name: Compute version
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -57,7 +63,10 @@ jobs:
       - name: Compute version
         id: compute
         run: |
-          VERSION="$(date -u +'%Y.%-m.%-d-%-H')"
+          HOUR=$(date -u +'%-H')
+          MINUTE=$(date -u +'%-M')
+          HM=$((HOUR * 100 + MINUTE))
+          VERSION="$(date -u +'%Y.%-m.%-d')-$HM"
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
 
