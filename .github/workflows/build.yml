@@ -70,9 +70,16 @@ jobs:
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
 
-  # Packages a native installer per OS and publishes it to this repo's
-  # GitHub Releases (electron-updater reads from there, and the download
-  # site at /docs links to whatever /releases/latest returns).
+  # Packages a native installer per OS. Builds only — does NOT publish.
+  # electron-builder's GitHub publisher creates the release as a draft and
+  # only converts it to a real, tagged release as a finalization step once
+  # it's done uploading; running that concurrently from two matrix legs
+  # (Windows + Linux, both targeting the same tag) is a race, and it's a
+  # race neither leg reliably wins — both drafts merge into one release
+  # object, but nothing ever flips it out of "draft", so it's left sitting
+  # under a throwaway "untagged-*" URL that electron-updater 404s against
+  # (see git history for a real release this happened to). Publishing is
+  # done once, serialized, in the `publish` job below instead.
   #
   # Code signing is optional here: electron-builder skips it when the
   # matching secrets aren't set, producing an unsigned build (OS security
@@ -101,8 +108,6 @@ jobs:
     defaults:
       run:
         working-directory: app
-    permissions:
-      contents: write
     steps:
       - uses: actions/checkout@v5
 
@@ -119,21 +124,59 @@ jobs:
 
       - run: npm run build
 
-      - name: Package and publish
+      - name: Package
         # --config.extraMetadata.version overrides package.json's version
-        # for this build/publish only — nothing gets committed back to the
-        # repo. Use the full "--config." form, not the "-c." short alias:
-        # on the Windows runner, "-c.extraMetadata.version=X" was parsed as
-        # -c (config) taking the literal string ".extraMetadata.version=X"
-        # as a file path, which then failed with ENOENT.
-        run: npx electron-builder ${{ matrix.target }} --publish always --config.extraMetadata.version=${{ needs.version.outputs.version }}
+        # for this build only — nothing gets committed back to the repo.
+        # Use the full "--config." form, not the "-c." short alias: on the
+        # Windows runner, "-c.extraMetadata.version=X" was parsed as -c
+        # (config) taking the literal string ".extraMetadata.version=X" as
+        # a file path, which then failed with ENOENT.
+        run: npx electron-builder ${{ matrix.target }} --publish never --config.extraMetadata.version=${{ needs.version.outputs.version }}
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CSC_LINK: ${{ matrix.os == 'windows-latest' && secrets.WIN_CSC_LINK || matrix.os == 'macos-latest' && secrets.MAC_CSC_LINK || '' }}
           CSC_KEY_PASSWORD: ${{ matrix.os == 'windows-latest' && secrets.WIN_CSC_KEY_PASSWORD || matrix.os == 'macos-latest' && secrets.MAC_CSC_KEY_PASSWORD || '' }}
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+
+      - name: Upload build as workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-${{ matrix.os }}
+          path: |
+            app/dist/*.exe
+            app/dist/*.exe.blockmap
+            app/dist/*.AppImage
+            app/dist/*.AppImage.blockmap
+            app/dist/latest*.yml
+          if-no-files-found: error
+          retention-days: 1
+
+  # Publishes every platform's build to a single GitHub release, in one
+  # serialized job — see the `package` job above for why this can't be done
+  # per matrix leg.
+  publish:
+    name: Publish release
+    needs: [version, package]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download all platform builds
+        uses: actions/download-artifact@v5
+        with:
+          pattern: dist-*
+          path: dist
+          merge-multiple: true
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${{ needs.version.outputs.tag }}" dist/* \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "${{ needs.version.outputs.tag }}" \
+            --notes "Automated build from ${{ github.sha }}."
 
   # With a release published on every push, the Releases page would
   # otherwise accumulate one entry per commit forever. Once this push's
@@ -143,7 +186,7 @@ jobs:
   # while older builds/assets stay around, just hidden from the public list.
   cleanup:
     name: Unpublish prior releases
-    needs: [version, package]
+    needs: [version, publish]
     runs-on: ubuntu-latest
     permissions:
       contents: write
