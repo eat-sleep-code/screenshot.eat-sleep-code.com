@@ -29,6 +29,7 @@ linux:
   target:
     - AppImage
   category: Development
+  syncDesktopName: true
 publish:
   provider: github
   owner: eat-sleep-code

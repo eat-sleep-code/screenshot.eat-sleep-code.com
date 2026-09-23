@@ -26,6 +26,11 @@ npm run dist:linux    # electron-builder, Linux target
 - `src/preload` — the only bridge between main and renderer; exposes a minimal typed `window.deviceScreenshotApi`. Built as CommonJS (`format: "cjs"` in `electron.vite.config.mjs`) because Electron's sandboxed preload loader doesn't support ESM.
 - `src/renderer` — React UI (Vite). Tailwind v4, `@headlessui/react`, `lucide-react`, per the `eat-sleep-code-react` house style.
 - `data/presets.json` — seed device presets, shipped as an `extraResource` in packaged builds. Phone/tablet dimensions are copied from `playwright-core`'s device registry; re-verify before each release (see the file's own `$comment`).
+- `resources/icon.png` — 1024×1024 source icon; electron-builder generates the platform-specific `.ico`/`.icns`/PNG set from it automatically. Placeholder design (device outline framed by capture-corner brackets, matching the download site's dark/cyan palette) — swap for real branding whenever it's supplied.
+
+## Cross-building Linux/macOS targets from Windows
+
+`npm run dist:linux` packages an AppImage, which embeds POSIX symlinks (e.g. for the icon). Creating those on Windows needs either admin rights or **Developer Mode** enabled (Settings → Privacy & security → For developers), otherwise it fails with `EISDIR` on a symlink path. macOS builds can't be signed/notarized from Windows at all. For real releases, build each target on its native OS (a GitHub Actions matrix is the standard setup, and doubles as the CI for GitHub Releases publishing) rather than cross-building locally.
 
 ## Known open items (see repo root `CLAUDE.md`)
 
