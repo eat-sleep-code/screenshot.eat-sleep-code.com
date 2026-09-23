@@ -38,19 +38,27 @@ jobs:
       - run: npm run build
 
   # Every push to main gets its own release — no `git tag` step needed.
-  # Version is YYYY.M.D-HM (UTC, unpadded month/day, e.g. 2026.9.23-1405
-  # for 14:05). HM is hour*100+minute as plain arithmetic, not
-  # hour-then-padded-minute concatenated as text: concatenating text would
-  # reintroduce a leading zero for any hour-0 push (e.g. "0" + "05" ->
-  # "005", invalid), since semver numeric identifiers can't start with 0.
-  # The arithmetic form has no such case — 0:05 is just 5 — and still
-  # increases strictly through the day, so ordering stays correct.
-  # A bare 4th dot segment isn't valid semver at all (electron-builder
-  # enforces this — see git history for the leading-zero version this
-  # same constraint already caught once), so HM rides as semver
-  # prerelease metadata after a hyphen instead. Two pushes in the same
-  # UTC minute intentionally produce the same version/tag — the second
-  # just overwrites the first's release.
+  # Version is YYYY.M.PPPPPP (UTC, unpadded month), e.g. 2026.9.232326 for
+  # Sep 23 at 23:26. PPPPPP is day*10000 + hour*100 + minute as plain
+  # arithmetic (not text concatenation, which could reintroduce a leading
+  # zero — semver numeric identifiers can't start with one), folded into
+  # the patch number rather than a separate dot/hyphen segment: day
+  # dominates, so it's still strictly increasing through the month, and it
+  # resets (with minor bumping) each month.
+  #
+  # This deliberately avoids a `-` prerelease suffix (e.g. "2026.9.23-2326"),
+  # even though that's otherwise valid semver and was tried first — DO NOT
+  # go back to it. electron-updater's GitHub provider treats any
+  # non-"alpha"/"beta" semver prerelease identifier as a custom release
+  # "channel" scoped to just that identifier (see getLatestVersion() in
+  # electron-updater/out/providers/GitHubProvider.js): since every build's
+  # prerelease id is unique to itself (e.g. "2326"), it only ever matches
+  # the running app's own release, never a newer one, and 404s once that
+  # release gets unpublished by the cleanup job below. A plain
+  # MAJOR.MINOR.PATCH release (no prerelease/build segment) sidesteps this
+  # entirely and resolves the real latest release normally. Two pushes in
+  # the same UTC minute intentionally produce the same version/tag — the
+  # second just overwrites the first's release.
   version:
     name: Compute version
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -63,10 +71,11 @@ jobs:
       - name: Compute version
         id: compute
         run: |
+          DAY=$(date -u +'%-d')
           HOUR=$(date -u +'%-H')
           MINUTE=$(date -u +'%-M')
-          HM=$((HOUR * 100 + MINUTE))
-          VERSION="$(date -u +'%Y.%-m.%-d')-$HM"
+          PATCH=$((DAY * 10000 + HOUR * 100 + MINUTE))
+          VERSION="$(date -u +'%Y.%-m').$PATCH"
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
 
