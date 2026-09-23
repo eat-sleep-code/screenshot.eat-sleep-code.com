@@ -60,8 +60,11 @@ jobs:
         include:
           - os: windows-latest
             target: --win
-          - os: macos-latest
-            target: --mac
+          # macOS build disabled until we have an Apple Developer account —
+          # uncomment once MAC_CSC_LINK/MAC_CSC_KEY_PASSWORD and the
+          # APPLE_* notarization secrets are set up (see CLAUDE.md "Open items").
+          # - os: macos-latest
+          #   target: --mac
           - os: ubuntu-latest
             target: --linux
     runs-on: ${{ matrix.os }}
