@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { RefreshCcw, Trash2, Monitor } from "lucide-react";
 import { useTranslation } from "../../hooks/use-translation.jsx";
+import { useThemePreference } from "../../hooks/use-theme.jsx";
 
 export default function SettingsView() {
 	const t = useTranslation();
 	const [sessions, setSessions] = useState([]);
 	const [checking, setChecking] = useState(false);
 	const [updateStatus, setUpdateStatus] = useState(null);
+	const [themePreference, setThemePreference] = useThemePreference();
 
 	useEffect(() => {
 		window.deviceScreenshotApi.session.list().then(setSessions);
@@ -38,7 +40,16 @@ export default function SettingsView() {
 					<Monitor size={16} aria-hidden="true" />
 					{t("settings.theme")}
 				</h2>
-				<p className="text-sm text-neutral-500 dark:text-neutral-400">{t("settings.themeHint")}</p>
+				<select
+					className="field-input max-w-xs"
+					value={themePreference}
+					onChange={(event) => setThemePreference(event.target.value)}
+					aria-label={t("settings.theme")}
+				>
+					<option value="system">{t("settings.themeSystem")}</option>
+					<option value="light">{t("settings.themeLight")}</option>
+					<option value="dark">{t("settings.themeDark")}</option>
+				</select>
 			</section>
 
 			<section>

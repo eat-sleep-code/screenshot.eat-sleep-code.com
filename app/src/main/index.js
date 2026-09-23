@@ -1,4 +1,4 @@
-import { app, BrowserWindow, session } from "electron";
+import { app, BrowserWindow, nativeTheme, session } from "electron";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -10,6 +10,9 @@ import { fileURLToPath } from "node:url";
 process.env.PLAYWRIGHT_BROWSERS_PATH = join(app.getPath("userData"), "browsers");
 
 const { registerIpcHandlers } = await import("./ipc.js");
+const { getSetting } = await import("./store.js");
+
+nativeTheme.themeSource = getSetting("themePreference") ?? "system";
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
 const isDev = !app.isPackaged;

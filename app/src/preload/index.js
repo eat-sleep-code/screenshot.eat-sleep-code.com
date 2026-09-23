@@ -36,6 +36,8 @@ const api = {
 	theme: {
 		get: () => ipcRenderer.invoke("theme:get"),
 		onChange: (callback) => subscribe("theme:changed", callback),
+		getPreference: () => ipcRenderer.invoke("theme:getPreference"),
+		setPreference: (value) => ipcRenderer.invoke("theme:setPreference", value),
 	},
 	updates: {
 		check: () => ipcRenderer.invoke("updates:check"),

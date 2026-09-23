@@ -75,7 +75,9 @@ export default {
 	settings: {
 		title: "Settings",
 		theme: "Appearance",
-		themeHint: "Follows your system's light/dark setting automatically.",
+		themeSystem: "System",
+		themeLight: "Light",
+		themeDark: "Dark",
 		checkForUpdates: "Check for updates",
 		checking: "Checking…",
 		upToDate: "You're up to date.",

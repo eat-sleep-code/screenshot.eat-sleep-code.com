@@ -84,6 +84,14 @@ export function registerIpcHandlers(getMainWindow) {
 
 	ipcMain.handle("theme:get", () => (nativeTheme.shouldUseDarkColors ? "dark" : "light"));
 
+	ipcMain.handle("theme:getPreference", () => nativeTheme.themeSource);
+
+	ipcMain.handle("theme:setPreference", (_event, value) => {
+		if (value !== "system" && value !== "light" && value !== "dark") badRequest("theme preference");
+		nativeTheme.themeSource = value;
+		setSetting("themePreference", value);
+	});
+
 	ipcMain.handle("app:getVersion", () => app.getVersion());
 
 	ipcMain.handle("shell:openExternal", (_event, url) => {
