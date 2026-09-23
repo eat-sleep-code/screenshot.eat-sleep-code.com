@@ -30,7 +30,13 @@ npm run dist:linux    # electron-builder, Linux target
 
 ## Cross-building Linux/macOS targets from Windows
 
-`npm run dist:linux` packages an AppImage, which embeds POSIX symlinks (e.g. for the icon). Creating those on Windows needs either admin rights or **Developer Mode** enabled (Settings → Privacy & security → For developers), otherwise it fails with `EISDIR` on a symlink path. macOS builds can't be signed/notarized from Windows at all. For real releases, build each target on its native OS (a GitHub Actions matrix is the standard setup, and doubles as the CI for GitHub Releases publishing) rather than cross-building locally.
+`npm run dist:linux` packages an AppImage, which embeds POSIX symlinks (e.g. for the icon). Creating those on Windows needs either admin rights or **Developer Mode** enabled (Settings → Privacy & security → For developers), otherwise it fails with `EISDIR` on a symlink path. macOS builds can't be signed/notarized from Windows at all. For real releases, build each target on its native OS — see CI below — rather than cross-building locally.
+
+## CI (`.github/workflows/build.yml`)
+
+- Every push/PR: installs from a clean `node_modules` and runs `electron-vite build` on Linux — a fast compile check (this is also how the vite/electron-vite version mismatch mentioned above would get caught automatically going forward).
+- Pushing a `v*` tag (e.g. `git tag v0.2.0 && git push --tags`): a Windows/macOS/Linux matrix packages each native target with electron-builder and publishes to this repo's GitHub Releases via `--publish always`, using the default `GITHUB_TOKEN`.
+- Code signing is opt-in via repo secrets (`WIN_CSC_LINK`/`WIN_CSC_KEY_PASSWORD`, `MAC_CSC_LINK`/`MAC_CSC_KEY_PASSWORD`, `APPLE_ID`/`APPLE_APP_SPECIFIC_PASSWORD`/`APPLE_TEAM_ID`) — electron-builder just produces an unsigned build when they're absent, so the workflow runs end-to-end today and starts signing the moment Jeff adds certificates, no workflow changes needed.
 
 ## Known open items (see repo root `CLAUDE.md`)
 
