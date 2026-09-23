@@ -76,6 +76,15 @@ export async function runCapture({ url, selections, presets, outputDir, options 
 				onProgress?.({ label, status: "loading" });
 				await page.goto(url, { waitUntil: "load", timeout: 60000 });
 
+				// The "load" event fires as soon as the initial HTML/assets are in —
+				// JS-heavy pages often keep fetching and rendering well after that
+				// (more so on wider/tablet-ish viewports that load a heavier layout),
+				// so a screenshot taken right away can catch it mid-render. Give it a
+				// bounded extra wait for network activity to quiet down; sites with
+				// constant polling/websockets never go idle, so this is expected to
+				// time out harmlessly on some of them rather than block the capture.
+				await page.waitForLoadState("networkidle", { timeout: 10000 }).catch(() => {});
+
 				if (options.scrollThrough) {
 					onProgress?.({ label, status: "scrolling" });
 					await scrollThroughPage(page);
