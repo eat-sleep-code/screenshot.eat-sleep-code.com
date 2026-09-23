@@ -3,7 +3,6 @@ import AppShell from "./components/layout/app-shell.jsx";
 import BrowserInstallGate from "./components/settings/browser-install-gate.jsx";
 import CaptureView from "./components/capture/capture-view.jsx";
 import SettingsView from "./components/settings/settings-view.jsx";
-import AboutView from "./components/about/about-view.jsx";
 import { useTheme } from "./hooks/use-theme.jsx";
 
 export default function App() {
@@ -15,7 +14,6 @@ export default function App() {
 			<AppShell activeTab={activeTab} onTabChange={setActiveTab}>
 				{activeTab === "capture" && <CaptureView />}
 				{activeTab === "settings" && <SettingsView />}
-				{activeTab === "about" && <AboutView />}
 			</AppShell>
 		</BrowserInstallGate>
 	);

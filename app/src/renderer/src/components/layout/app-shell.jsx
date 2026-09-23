@@ -1,10 +1,9 @@
-import { Camera, Settings, Info } from "lucide-react";
+import { Camera, Settings } from "lucide-react";
 import { useTranslation } from "../../hooks/use-translation.jsx";
 
 const TABS = [
 	{ id: "capture", icon: Camera, labelKey: "nav.capture" },
 	{ id: "settings", icon: Settings, labelKey: "nav.settings" },
-	{ id: "about", icon: Info, labelKey: "nav.about" },
 ];
 
 export default function AppShell({ activeTab, onTabChange, children }) {

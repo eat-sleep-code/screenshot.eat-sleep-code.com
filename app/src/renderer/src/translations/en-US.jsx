@@ -96,6 +96,5 @@ export default {
 	nav: {
 		capture: "Capture",
 		settings: "Settings",
-		about: "About",
 	},
 };

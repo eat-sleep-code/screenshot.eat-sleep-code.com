@@ -3,15 +3,29 @@ import { RefreshCcw, Trash2, Monitor } from "lucide-react";
 import { useTranslation } from "../../hooks/use-translation.jsx";
 import { useThemePreference } from "../../hooks/use-theme.jsx";
 
+function ExternalLink({ href, children }) {
+	return (
+		<button
+			type="button"
+			className="text-cyan-600 dark:text-cyan-400 hover:underline"
+			onClick={() => window.deviceScreenshotApi.shell.openExternal(href)}
+		>
+			{children}
+		</button>
+	);
+}
+
 export default function SettingsView() {
 	const t = useTranslation();
 	const [sessions, setSessions] = useState([]);
 	const [checking, setChecking] = useState(false);
 	const [updateStatus, setUpdateStatus] = useState(null);
+	const [version, setVersion] = useState("");
 	const [themePreference, setThemePreference] = useThemePreference();
 
 	useEffect(() => {
 		window.deviceScreenshotApi.session.list().then(setSessions);
+		window.deviceScreenshotApi.app.getVersion().then(setVersion);
 		const unsubscribe = window.deviceScreenshotApi.updates.onStatus((status) => setUpdateStatus(status));
 		return () => unsubscribe();
 	}, []);
@@ -79,9 +93,11 @@ export default function SettingsView() {
 				)}
 			</section>
 
-			<section>
-				<h2 className="text-sm font-semibold mb-2">{t("settings.title")}</h2>
-				<button type="button" className="btn btn-secondary" onClick={handleCheckForUpdates} disabled={checking}>
+			<section className="border-t border-neutral-200 dark:border-neutral-800 pt-6">
+				<h2 className="text-sm font-semibold mb-2">{t("settings.about")}</h2>
+				<p className="text-sm text-neutral-500 dark:text-neutral-400">{t("about.version", { version })}</p>
+
+				<button type="button" className="btn btn-secondary mt-2" onClick={handleCheckForUpdates} disabled={checking}>
 					<RefreshCcw size={16} className={checking ? "animate-spin" : ""} aria-hidden="true" />
 					{checking ? t("settings.checking") : t("settings.checkForUpdates")}
 				</button>
@@ -93,6 +109,11 @@ export default function SettingsView() {
 						{updateStatus.status === "error" && updateStatus.message}
 					</p>
 				) : null}
+
+				<div className="mt-4 flex gap-4 text-sm">
+					<ExternalLink href="https://eat-sleep-code.com/privacy">{t("about.privacy")}</ExternalLink>
+					<ExternalLink href="https://eat-sleep-code.com/terms-of-use">{t("about.terms")}</ExternalLink>
+				</div>
 			</section>
 		</div>
 	);
