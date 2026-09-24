@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://screenshot.eat-sleep-code.com/sitemap.xml

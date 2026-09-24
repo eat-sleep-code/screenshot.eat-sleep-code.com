@@ -3,9 +3,71 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="Device Screenshot Tool — capture screenshots of any website, including internal apps, across real device presets">
-	<meta name="theme-color" content="#0a0e27">
 	<title>Device Screenshot Tool</title>
+	<meta name="description" content="A desktop app that captures screenshots of any website — including internal, VPN-only, and localhost apps — across real device presets like the latest iPhone and Pixel models.">
+	<meta name="keywords" content="device screenshot tool, website screenshot, responsive screenshot, iphone screenshot, pixel screenshot, screenshot desktop app, viewport screenshot, full page screenshot">
+	<meta name="author" content="eat-sleep-code">
+	<meta name="robots" content="index, follow">
+	<link rel="canonical" href="https://screenshot.eat-sleep-code.com/">
+	<meta name="theme-color" content="#0a0e27">
+
+	<!-- Favicons -->
+	<link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+	<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+	<link rel="icon" type="image/png" sizes="48x48" href="/images/favicon-48.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="192x192" href="/images/icon-192.png">
+	<link rel="icon" type="image/png" sizes="512x512" href="/images/icon-512.png">
+
+	<!-- Open Graph -->
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Device Screenshot Tool">
+	<meta property="og:description" content="A desktop app that captures screenshots of any website — including internal, VPN-only, and localhost apps — across real device presets like the latest iPhone and Pixel models.">
+	<meta property="og:url" content="https://screenshot.eat-sleep-code.com/">
+	<meta property="og:site_name" content="Device Screenshot Tool">
+	<meta property="og:image" content="https://screenshot.eat-sleep-code.com/images/opengraph.png">
+	<meta property="og:image:width" content="1200">
+	<meta property="og:image:height" content="630">
+	<meta property="og:image:alt" content="Device Screenshot Tool icon">
+	<meta property="og:locale" content="en_US">
+
+	<!-- Twitter Card -->
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:title" content="Device Screenshot Tool">
+	<meta name="twitter:description" content="A desktop app that captures screenshots of any website — including internal, VPN-only, and localhost apps — across real device presets like the latest iPhone and Pixel models.">
+	<meta name="twitter:image" content="https://screenshot.eat-sleep-code.com/images/opengraph.png">
+	<meta name="twitter:image:alt" content="Device Screenshot Tool icon">
+
+	<!-- Structured data -->
+	<script type="application/ld+json">
+	{
+		"@context": "https://schema.org",
+		"@type": "SoftwareApplication",
+		"name": "Device Screenshot Tool",
+		"url": "https://screenshot.eat-sleep-code.com/",
+		"description": "A desktop app that captures screenshots of any website — including internal, VPN-only, and localhost apps — across a full set of device presets, including the current iPhone and Pixel models, and a handful of desktop/tablet sizes.",
+		"applicationCategory": "DeveloperApplication",
+		"operatingSystem": "Windows, Linux",
+		"image": "https://screenshot.eat-sleep-code.com/images/opengraph.png",
+		"offers": {
+			"@type": "Offer",
+			"price": "0",
+			"priceCurrency": "USD"
+		},
+		"author": {
+			"@type": "Organization",
+			"name": "eat-sleep-code",
+			"url": "https://eat-sleep-code.com"
+		},
+		"publisher": {
+			"@type": "Organization",
+			"name": "eat-sleep-code",
+			"url": "https://eat-sleep-code.com"
+		}
+	}
+	</script>
+
 	<style>
 		* {
 			margin: 0;
@@ -175,8 +237,39 @@
 			color: #00d4e4;
 		}
 
+		.smartscreen-notice {
+			margin-top: 1.5rem;
+			padding: 1rem 1.25rem;
+			background: #1c2128;
+			border: 1px solid #30363d;
+			border-left: 3px solid #d29922;
+			border-radius: 6px;
+			font-size: 0.9rem;
+			color: #c9d1d9;
+		}
+
+		.smartscreen-notice strong {
+			color: #e3b341;
+		}
+
+		.smartscreen-notice ol {
+			margin: 0.75rem 0 0 1.25rem;
+			padding: 0;
+		}
+
+		.smartscreen-notice li {
+			margin-bottom: 0.35rem;
+		}
+
+		.smartscreen-notice li:last-child {
+			margin-bottom: 0;
+		}
+
 		.footer {
-			text-align: center;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 1rem;
 			margin-top: 3rem;
 			color: #6e7681;
 			font-size: 0.9rem;
@@ -193,6 +286,12 @@
 		}
 
 		@media (max-width: 600px) {
+			.footer {
+				flex-direction: column;
+				justify-content: center;
+				text-align: center;
+			}
+
 			.content-box {
 				padding: 2rem;
 			}
@@ -208,6 +307,15 @@
 			.download-btn {
 				flex-basis: 100%;
 				max-width: none;
+			}
+
+			.footer-copyright,
+			.footer-links {
+				display: block;
+			}
+
+			.footer-links {
+				margin-top: 0.5rem;
 			}
 		}
 	</style>
@@ -237,14 +345,23 @@
 				</a>
 			</div>
 			<p class="meta-line" id="version-line">Checking latest release&hellip;</p>
+
+			<div class="smartscreen-notice">
+				<strong>Windows users:</strong> this app isn't yet signed with a Microsoft-trusted certificate, so Windows SmartScreen will show an "unrecognized app" warning when you run the installer. It's safe to continue:
+				<ol>
+					<li>Click <strong>More info</strong> on the SmartScreen dialog.</li>
+					<li>Click <strong>Run anyway</strong>.</li>
+				</ol>
+			</div>
 		</div>
 
 		<div class="footer">
-			&copy; <script>document.write(new Date().getFullYear());</script> &lt;eat-sleep-code.com&gt;.  All rights reserved.
-			&nbsp;|&nbsp;
-			<a href="https://eat-sleep-code.com/privacy" target="_blank">Privacy Policy</a>
-			&nbsp;|&nbsp;
-			<a href="https://eat-sleep-code.com/terms-of-use" target="_blank">Terms of Use</a>
+			<div class="footer-copyright">&copy; <script>document.write(new Date().getFullYear());</script> &lt;eat-sleep-code.com&gt;. All rights reserved.</div>
+			<div class="footer-links">
+				<a href="https://eat-sleep-code.com/privacy" target="_blank">Privacy Policy</a>
+				&nbsp;|&nbsp;
+				<a href="https://eat-sleep-code.com/terms-of-use" target="_blank">Terms of Use</a>
+			</div>
 		</div>
 	</div>
 
