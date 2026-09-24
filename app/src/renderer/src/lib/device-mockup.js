@@ -137,5 +137,6 @@ export function pickVariant(device, color, orientation) {
 export function withFilenameSuffix(filePath, suffix) {
 	const base = filePath.split(/[\\/]/).pop();
 	const dot = base.lastIndexOf(".");
-	return dot === -1 ? `${base}_${suffix}` : `${base.slice(0, dot)}_${suffix}${base.slice(dot)}`;
+	const loweredSuffix = suffix.toLowerCase();
+	return dot === -1 ? `${base}-${loweredSuffix}` : `${base.slice(0, dot)}-${loweredSuffix}${base.slice(dot)}`;
 }

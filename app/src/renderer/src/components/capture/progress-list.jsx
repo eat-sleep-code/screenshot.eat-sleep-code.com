@@ -1,5 +1,6 @@
 import { Loader2, CheckCircle2, XCircle, MousePointerClick, ScanEye } from "lucide-react";
 import { useTranslation } from "../../hooks/use-translation.jsx";
+import { getResultIcon, stripOrientationSuffix } from "../../lib/result-icon.js";
 
 const STATUS_ICON = {
 	loading: Loader2,
@@ -27,7 +28,7 @@ const STATUS_COLOR = {
 
 const SPINNING = new Set(["loading", "scrolling", "capturing"]);
 
-export default function ProgressList({ items }) {
+export default function ProgressList({ items, presets }) {
 	const t = useTranslation();
 	if (items.length === 0) return null;
 
@@ -36,15 +37,17 @@ export default function ProgressList({ items }) {
 			<h2 className="text-sm font-semibold mb-2">{t("capture.progressTitle")}</h2>
 			<ul className="space-y-1">
 				{items.map((item) => {
-					const Icon = STATUS_ICON[item.status] ?? Loader2;
+					const StatusIcon = STATUS_ICON[item.status] ?? Loader2;
+					const { Icon: KindIcon, rotate } = getResultIcon(item, presets);
 					return (
 						<li key={item.label} className="flex items-center gap-2 text-sm">
-							<Icon
+							<StatusIcon
 								size={16}
 								className={`${STATUS_COLOR[item.status]} ${SPINNING.has(item.status) ? "animate-spin" : ""}`}
 								aria-hidden="true"
 							/>
-							<span>{item.label}</span>
+							<KindIcon size={14} className={`shrink-0 text-neutral-500 dark:text-neutral-400 ${rotate ? "-rotate-90" : ""}`} aria-hidden="true" />
+							<span>{stripOrientationSuffix(item.label)}</span>
 							<span className={`text-xs ${STATUS_COLOR[item.status]}`}>{t(STATUS_KEY[item.status])}</span>
 							{item.message ? <span className="text-xs text-red-500">{item.message}</span> : null}
 						</li>

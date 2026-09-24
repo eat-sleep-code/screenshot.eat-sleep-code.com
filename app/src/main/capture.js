@@ -5,11 +5,15 @@ import { engineFor } from "./browsers.js";
 import { loadStorageState } from "./sessions.js";
 
 function sanitizeForFilename(value) {
-	return value.replace(/[^a-z0-9._-]+/gi, "-").replace(/-+/g, "-").replace(/^-|-$/g, "");
+	return value
+		.toLowerCase()
+		.replace(/[^a-z0-9.-]+/g, "-")
+		.replace(/-+/g, "-")
+		.replace(/^-|-$/g, "");
 }
 
 function filenameFor(host, presetName, orientation) {
-	return `${sanitizeForFilename(host)}_${sanitizeForFilename(presetName)}_${orientation}.png`;
+	return `${sanitizeForFilename(host)}-${sanitizeForFilename(presetName)}-${orientation}.png`;
 }
 
 // Generic (frame-less) viewports used for the extra "Full page" shots.
@@ -22,6 +26,7 @@ function filenameFor(host, presetName, orientation) {
 const VIRTUAL_FULL_PAGE_DEVICES = [
 	{
 		label: "Full page (Desktop)",
+		deviceKind: "desktop",
 		width: 1440,
 		height: 900,
 		deviceScaleFactor: 1,
@@ -32,6 +37,7 @@ const VIRTUAL_FULL_PAGE_DEVICES = [
 	},
 	{
 		label: "Full page (Mobile)",
+		deviceKind: "mobile",
 		width: 412,
 		height: 915,
 		deviceScaleFactor: 1,
@@ -66,11 +72,11 @@ async function scrollThroughPage(page) {
  * and screenshots it to `filePath`. Shared by both the per-preset capture
  * loop and the extra "Full page" virtual-device pass below.
  */
-async function captureOne(browser, contextOptions, { url, options, storageState, label, onProgress, filePath, fullPage }) {
+async function captureOne(browser, contextOptions, { url, options, storageState, label, onProgress, filePath, fullPage, meta }) {
 	const context = await browser.newContext({ ...contextOptions, storageState });
 	try {
 		const page = await context.newPage();
-		onProgress?.({ label, status: "loading" });
+		onProgress?.({ label, status: "loading", ...meta });
 		await page.goto(url, { waitUntil: "load", timeout: 60000 });
 
 		// The "load" event fires as soon as the initial HTML/assets are in —
@@ -83,7 +89,7 @@ async function captureOne(browser, contextOptions, { url, options, storageState,
 		await page.waitForLoadState("networkidle", { timeout: 10000 }).catch(() => {});
 
 		if (options.scrollThrough) {
-			onProgress?.({ label, status: "scrolling" });
+			onProgress?.({ label, status: "scrolling", ...meta });
 			await scrollThroughPage(page);
 		}
 
@@ -98,7 +104,7 @@ async function captureOne(browser, contextOptions, { url, options, storageState,
 			await page.waitForTimeout(options.settleDelayMs);
 		}
 
-		onProgress?.({ label, status: "capturing" });
+		onProgress?.({ label, status: "capturing", ...meta });
 		await page.screenshot({ path: filePath, fullPage });
 	} finally {
 		await context.close();
@@ -139,13 +145,24 @@ export async function runCapture({ url, selections, presets, outputDir, options 
 			if (!preset) continue;
 			const { orientation } = selection;
 			const label = `${preset.name} (${orientation})`;
+			const meta = { kind: "device", presetId: preset.id, orientation };
 
 			try {
 				const browser = await getBrowser(preset.engine);
-				const isLandscape = orientation === "landscape";
+				// A preset's stored width/height are its natural shape (e.g. a phone
+				// preset is stored portrait, a desktop preset is stored landscape).
+				// Only swap the two when the requested orientation doesn't already
+				// match that natural shape — swapping unconditionally is wrong for
+				// presets whose natural shape is landscape (width > height), like
+				// Desktop/Laptop: requesting "landscape" for those must leave the
+				// dimensions alone rather than swapping them into a tall/narrow
+				// viewport (which was cropping the page instead of its top).
+				const isNaturalLandscape = preset.width > preset.height;
+				const wantsLandscape = orientation === "landscape";
+				const shouldSwap = wantsLandscape !== isNaturalLandscape;
 				const viewport = {
-					width: isLandscape ? preset.height : preset.width,
-					height: isLandscape ? preset.width : preset.height,
+					width: shouldSwap ? preset.height : preset.width,
+					height: shouldSwap ? preset.width : preset.height,
 				};
 
 				const filename = filenameFor(host, preset.name, orientation);
@@ -160,21 +177,22 @@ export async function runCapture({ url, selections, presets, outputDir, options 
 						hasTouch: preset.hasTouch,
 						userAgent: preset.userAgent || undefined,
 					},
-					{ url, options, storageState, label, onProgress, filePath, fullPage: false }
+					{ url, options, storageState, label, onProgress, filePath, fullPage: false, meta }
 				);
 
 				const fileUrl = pathToFileURL(filePath).href;
-				onProgress?.({ label, status: "done", filePath, fileUrl });
-				results.push({ label, filePath, fileUrl, ok: true });
+				onProgress?.({ label, status: "done", filePath, fileUrl, ...meta });
+				results.push({ label, filePath, fileUrl, ok: true, ...meta });
 			} catch (error) {
-				onProgress?.({ label, status: "error", message: error.message });
-				results.push({ label, ok: false, message: error.message });
+				onProgress?.({ label, status: "error", message: error.message, ...meta });
+				results.push({ label, ok: false, message: error.message, ...meta });
 			}
 		}
 
 		if (options.fullPage) {
 			for (const virtualDevice of VIRTUAL_FULL_PAGE_DEVICES) {
-				const { label } = virtualDevice;
+				const { label, deviceKind } = virtualDevice;
+				const meta = { kind: "fullpage", deviceKind };
 
 				try {
 					const browser = await getBrowser(virtualDevice.engine);
@@ -190,15 +208,15 @@ export async function runCapture({ url, selections, presets, outputDir, options 
 							hasTouch: virtualDevice.hasTouch,
 							userAgent: virtualDevice.userAgent || undefined,
 						},
-						{ url, options, storageState, label, onProgress, filePath, fullPage: true }
+						{ url, options, storageState, label, onProgress, filePath, fullPage: true, meta }
 					);
 
 					const fileUrl = pathToFileURL(filePath).href;
-					onProgress?.({ label, status: "done", filePath, fileUrl });
-					results.push({ label, filePath, fileUrl, ok: true });
+					onProgress?.({ label, status: "done", filePath, fileUrl, ...meta });
+					results.push({ label, filePath, fileUrl, ok: true, ...meta });
 				} catch (error) {
-					onProgress?.({ label, status: "error", message: error.message });
-					results.push({ label, ok: false, message: error.message });
+					onProgress?.({ label, status: "error", message: error.message, ...meta });
+					results.push({ label, ok: false, message: error.message, ...meta });
 				}
 			}
 		}

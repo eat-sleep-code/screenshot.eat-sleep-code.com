@@ -11,7 +11,7 @@ import { compositeDeviceMockup, pickVariant, withFilenameSuffix } from "../../li
 
 const DEFAULT_OPTIONS = {
 	fullPage: false,
-	scrollThrough: false,
+	scrollThrough: true,
 	settleDelayMs: 500,
 	injectCss: "",
 	injectJs: "",
@@ -99,7 +99,13 @@ export default function CaptureView() {
 		setProgressItems(
 			selections.map((selection) => {
 				const preset = presets.find((p) => p.id === selection.presetId);
-				return { label: `${preset?.name ?? selection.presetId} (${selection.orientation})`, status: "loading" };
+				return {
+					label: `${preset?.name ?? selection.presetId} (${selection.orientation})`,
+					status: "loading",
+					kind: "device",
+					presetId: selection.presetId,
+					orientation: selection.orientation,
+				};
 			})
 		);
 
@@ -150,7 +156,8 @@ export default function CaptureView() {
 				if (!variant) continue;
 
 				const mockupLabel = `${result.label} — ${color} overlay`;
-				setProgressItems((current) => [...current, { label: mockupLabel, status: "capturing" }]);
+				const mockupMeta = { kind: "device", presetId: selection.presetId, orientation: selection.orientation };
+				setProgressItems((current) => [...current, { label: mockupLabel, status: "capturing", ...mockupMeta }]);
 				try {
 					const blob = await compositeDeviceMockup({
 						screenshotUrl: result.fileUrl,
@@ -165,12 +172,12 @@ export default function CaptureView() {
 					setProgressItems((current) =>
 						current.map((item) => (item.label === mockupLabel ? { ...item, status: "done" } : item))
 					);
-					withMockups.push({ label: mockupLabel, filePath: saved.filePath, fileUrl: saved.fileUrl, ok: true });
+					withMockups.push({ label: mockupLabel, filePath: saved.filePath, fileUrl: saved.fileUrl, ok: true, ...mockupMeta });
 				} catch (error) {
 					setProgressItems((current) =>
 						current.map((item) => (item.label === mockupLabel ? { ...item, status: "error", message: error.message } : item))
 					);
-					withMockups.push({ label: mockupLabel, ok: false, message: error.message });
+					withMockups.push({ label: mockupLabel, ok: false, message: error.message, ...mockupMeta });
 				}
 			}
 		}
@@ -241,8 +248,8 @@ export default function CaptureView() {
 				</div>
 			) : null}
 
-			{activeStage === "downloading" ? <ProgressList items={progressItems} /> : null}
-			{activeStage === "results" ? <ThumbnailGallery results={results} /> : null}
+			{activeStage === "downloading" ? <ProgressList items={progressItems} presets={presets} /> : null}
+			{activeStage === "results" ? <ThumbnailGallery results={results} presets={presets} /> : null}
 		</div>
 	);
 }

@@ -41,10 +41,14 @@ export default function PresetPicker({
 	}
 
 	function selectAll() {
-		const all = presets.flatMap((preset) => [
-			{ presetId: preset.id, orientation: "portrait" },
-			{ presetId: preset.id, orientation: "landscape" },
-		]);
+		const all = presets.flatMap((preset) =>
+			preset.isMobile
+				? [
+						{ presetId: preset.id, orientation: "portrait" },
+						{ presetId: preset.id, orientation: "landscape" },
+					]
+				: [{ presetId: preset.id, orientation: "landscape" }]
+		);
 		onSelectionsChange(all);
 	}
 
@@ -137,7 +141,7 @@ export default function PresetPicker({
 											) : null}
 										</div>
 										<div className="mt-2 flex flex-wrap items-center gap-3">
-											{["portrait", "landscape"].map((orientation) => (
+											{(preset.isMobile ? ["portrait", "landscape"] : ["landscape"]).map((orientation) => (
 												<Field key={orientation} className="flex items-center gap-1.5 text-sm">
 													<Checkbox
 														checked={orientations.includes(orientation)}
