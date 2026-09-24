@@ -12,7 +12,7 @@ export default function AppShell({ activeTab, onTabChange, children }) {
 	return (
 		<div className="flex h-full flex-col">
 			<main className="flex-1 overflow-y-auto p-6">
-				<div className="mx-auto max-w-3xl flex justify-end mb-3">
+				<div className="mx-auto max-w-4xl flex justify-end mb-3">
 					<nav className="flex gap-1" aria-label={t("app.title")}>
 						{TABS.map(({ id, icon: Icon, labelKey }) => (
 							<button

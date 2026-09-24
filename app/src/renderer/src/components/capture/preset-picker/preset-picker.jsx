@@ -105,7 +105,11 @@ export default function PresetPicker({
 													) : null}
 												</p>
 												<p className="text-xs text-neutral-500 dark:text-neutral-400">
-													{preset.width}&times;{preset.height} &middot; {preset.engine} &middot;{" "}
+													{preset.custom ? (
+														<>
+															{preset.width}&times;{preset.height} &middot; {preset.engine} &middot;{" "}
+														</>
+													) : null}
 													{preset.custom ? t("presets.custom") : t("presets.builtIn")}
 												</p>
 											</div>

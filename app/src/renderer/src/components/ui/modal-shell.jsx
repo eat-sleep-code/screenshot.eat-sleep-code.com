@@ -5,7 +5,7 @@
 // don't reach for a bare Headless UI <Dialog> directly, wrap it with this
 // instead so every modal in the project behaves the same way.
 
-import { Dialog } from "@headlessui/react";
+import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 
 export default function ModalShell({ open, onClose, title, children, className = "" }) {
 	function handleKeyDown(event) {
@@ -26,13 +26,13 @@ export default function ModalShell({ open, onClose, title, children, className =
 			<div className="fixed inset-0 bg-black/30 dark:bg-black/50" aria-hidden="true" />
 
 			<div className="fixed inset-0 flex items-center justify-center p-4">
-				<Dialog.Panel
+				<DialogPanel
 					className={`w-full max-w-lg rounded-lg bg-white dark:bg-gray-900 p-6 shadow-xl ${className}`}
 				>
 					{title ? (
-						<Dialog.Title className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+						<DialogTitle className="text-lg font-semibold text-gray-900 dark:text-gray-100">
 							{title}
-						</Dialog.Title>
+						</DialogTitle>
 					) : null}
 
 					{children}
@@ -45,7 +45,7 @@ export default function ModalShell({ open, onClose, title, children, className =
 					>
 						Close
 					</button>
-				</Dialog.Panel>
+				</DialogPanel>
 			</div>
 		</Dialog>
 	);

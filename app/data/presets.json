@@ -59,7 +59,6 @@
 			"name": "Pixel 10 Fold (folded)",
 			"family": "Foldables",
 			"builtIn": true,
-			"needsVerification": true,
 			"width": 412,
 			"height": 901,
 			"deviceScaleFactor": 2.625,

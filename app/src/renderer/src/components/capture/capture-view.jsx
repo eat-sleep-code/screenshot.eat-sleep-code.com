@@ -186,7 +186,7 @@ export default function CaptureView() {
 	];
 
 	return (
-		<div className="mx-auto max-w-3xl space-y-6">
+		<div className="mx-auto max-w-4xl space-y-6">
 			<div className="flex gap-1 border-b border-neutral-200 dark:border-neutral-800" role="tablist">
 				{STAGES.map((stage) => (
 					<button
