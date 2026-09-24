@@ -108,11 +108,19 @@
 			</div>
 			<p class="meta-line" id="version-line">Checking latest release&hellip;</p>
 
-			<div class="smartscreen-notice">
+			<div class="smartscreen-notice hidden" id="windows-notice" data-platform="windows">
 				<strong>Windows users:</strong> this app isn't yet signed with a Microsoft-trusted certificate, so Windows SmartScreen will show an "unrecognized app" warning when you run the installer. It's safe to continue:
 				<ol>
 					<li>Click <strong>More info</strong> on the SmartScreen dialog.</li>
 					<li>Click <strong>Run anyway</strong>.</li>
+				</ol>
+			</div>
+
+			<div class="smartscreen-notice hidden" id="linux-notice" data-platform="linux">
+				<strong>Linux users:</strong> AppImages need <strong>FUSE 2</strong> to run, which many current distros don't install by default.
+				<ol>
+					<li>If double-clicking does nothing, open a terminal and install it: <code>sudo apt install libfuse2t64</code>.</li>
+					<li>Then double-click the AppImage, or run it from a terminal.</li>
 				</ol>
 			</div>
 		</div>

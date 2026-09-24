@@ -244,6 +244,10 @@ ul.features li::before {
 	margin-bottom: 0;
 }
 
+.smartscreen-notice.hidden {
+	display: none;
+}
+
 .footer {
 	display: flex;
 	align-items: center;
