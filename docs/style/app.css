@@ -1,0 +1,261 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	background: #0d1117;
+	color: #e6edf3;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+	line-height: 1.6;
+	min-height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 20px;
+}
+
+.container {
+	max-width: 760px;
+	width: 100%;
+	animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.header {
+	margin-bottom: 2.5rem;
+	text-align: center;
+}
+
+.logo {
+	font-size: 2rem;
+	font-weight: 500;
+	margin-bottom: 0.5rem;
+	color: rgba(255, 255, 255, 0.7);
+	letter-spacing: -1px;
+}
+
+.logo-text {
+	color: rgba(255, 255, 255, 1.0);
+	white-space: nowrap;
+}
+
+.subtitle {
+	font-size: 0.95rem;
+	color: #8b949e;
+	font-weight: 500;
+	letter-spacing: 0.5px;
+	text-transform: uppercase;
+}
+
+.content-box {
+	background: #161b22;
+	border: 1px solid #30363d;
+	border-radius: 6px;
+	padding: 3rem;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+h2 {
+	font-size: 1.1rem;
+	margin-bottom: 1.5rem;
+	color: #00bcd4;
+	font-weight: 600;
+}
+
+p {
+	margin-bottom: 1.5rem;
+	color: #c9d1d9;
+	font-size: 1rem;
+	line-height: 1.8;
+}
+
+p:last-of-type {
+	margin-bottom: 2rem;
+}
+
+ul.features {
+	list-style: none;
+	margin-bottom: 2rem;
+	color: #c9d1d9;
+}
+
+ul.features li {
+	padding: 0.35rem 0 0.35rem 1.4rem;
+	position: relative;
+}
+
+ul.features li::before {
+	content: "\25CE";
+	position: absolute;
+	left: 0;
+	color: #00bcd4;
+}
+
+.download-buttons {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.75rem;
+}
+
+.download-btn {
+	flex: 1 1 160px;
+	max-width: 220px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 12px 20px;
+	text-decoration: none;
+	border-radius: 6px;
+	font-weight: 600;
+	font-size: 0.95rem;
+	border: 1px solid transparent;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	text-align: center;
+}
+
+.download-btn-primary {
+	background: #00bcd4;
+	color: #0d1117;
+	box-shadow: 0 4px 12px rgba(0, 188, 212, 0.2);
+}
+
+.download-btn-primary:hover {
+	background: #00d4e4;
+	transform: translateY(-1px);
+	box-shadow: 0 6px 16px rgba(0, 188, 212, 0.3);
+}
+
+.download-btn-primary:active {
+	transform: translateY(0);
+	box-shadow: 0 2px 8px rgba(0, 188, 212, 0.2);
+}
+
+.download-btn-secondary {
+	color: #8b949e;
+	border-color: #30363d;
+	background: transparent;
+}
+
+.download-btn-secondary:hover {
+	color: #00bcd4;
+	border-color: #00bcd4;
+}
+
+.meta-line {
+	margin-top: 1.5rem;
+	font-size: 0.85rem;
+	color: #6e7681;
+}
+
+.meta-line a {
+	color: #00bcd4;
+	text-decoration: none;
+}
+
+.meta-line a:hover {
+	color: #00d4e4;
+}
+
+.smartscreen-notice {
+	margin-top: 1.5rem;
+	padding: 1rem 1.25rem;
+	background: #1c2128;
+	border: 1px solid #30363d;
+	border-left: 3px solid #d29922;
+	border-radius: 6px;
+	font-size: 0.9rem;
+	color: #c9d1d9;
+}
+
+.smartscreen-notice strong {
+	color: #e3b341;
+}
+
+.smartscreen-notice ol {
+	margin: 0.75rem 0 0 1.25rem;
+	padding: 0;
+}
+
+.smartscreen-notice li {
+	margin-bottom: 0.35rem;
+}
+
+.smartscreen-notice li:last-child {
+	margin-bottom: 0;
+}
+
+.footer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	margin-top: 3rem;
+	color: #6e7681;
+	font-size: 0.9rem;
+}
+
+.footer a {
+	color: #00bcd4;
+	text-decoration: none;
+	transition: color 0.2s ease;
+}
+
+.footer a:hover {
+	color: #00d4e4;
+}
+
+@media (max-width: 600px) {
+	.footer {
+		flex-direction: column;
+		justify-content: center;
+		text-align: center;
+	}
+
+	.content-box {
+		padding: 2rem;
+	}
+
+	.logo {
+		font-size: 2rem;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.app-name {
+		margin-top: 0.25rem;
+	}
+
+	h2 {
+		font-size: 1.4rem;
+	}
+
+	.download-btn {
+		flex-basis: 100%;
+		max-width: none;
+	}
+
+	.footer-copyright,
+	.footer-links {
+		display: block;
+	}
+
+	.footer-links {
+		margin-top: 0.5rem;
+	}
+}
