@@ -84,3 +84,15 @@ if (macosBtn) {
 		if (!macosBtn.contains(e.target)) macosBtn.classList.remove("show-hover-label");
 	});
 }
+
+document.querySelectorAll(".cmd-copy-btn").forEach((btn) => {
+	btn.addEventListener("click", async () => {
+		try {
+			await navigator.clipboard.writeText(btn.dataset.copy);
+			btn.classList.add("copied");
+			setTimeout(() => btn.classList.remove("copied"), 1500);
+		} catch (err) {
+			// clipboard access denied or unavailable; nothing to fall back to
+		}
+	});
+});

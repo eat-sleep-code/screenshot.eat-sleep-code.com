@@ -43,7 +43,8 @@ export default {
 	},
 	options: {
 		title: "Advanced options",
-		fullPage: "Full page (not just the viewport)",
+		fullPage: "Also capture full page (desktop + mobile)",
+		fullPageHint: "Adds two extra full-page screenshots (a generic desktop and mobile viewport) alongside your selected presets. Device overlays aren't applied to these.",
 		scrollThrough: "Scroll through the page before capturing",
 		scrollThroughHint: "Triggers lazy-loaded images and infinite-scroll sections.",
 		settleDelay: "Settle delay (ms)",
@@ -75,7 +76,7 @@ export default {
 	},
 	browsers: {
 		installing: "Setting up browser engines…",
-		installingHint: "Downloading Chromium and WebKit for capture. This only happens once.",
+		installingHint: "Downloading prerequisites...",
 	},
 	settings: {
 		title: "Settings",

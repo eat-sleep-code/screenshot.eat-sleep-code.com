@@ -1,4 +1,5 @@
-import { ChevronRight } from "lucide-react";
+import { Check, ChevronRight } from "lucide-react";
+import { Checkbox, Field, Label } from "@headlessui/react";
 import { useTranslation } from "../../hooks/use-translation.jsx";
 
 export default function CaptureOptions({ options, onChange }) {
@@ -15,27 +16,32 @@ export default function CaptureOptions({ options, onChange }) {
 				{t("options.title")}
 			</summary>
 			<div className="space-y-3 pl-1">
-				<label className="flex items-center gap-2 text-sm">
-					<input
-						type="checkbox"
-						className="h-4 w-4"
-						checked={options.fullPage}
-						onChange={(event) => update("fullPage", event.target.checked)}
-					/>
-					{t("options.fullPage")}
-				</label>
+				<div>
+					<Field className="flex items-center gap-2 text-sm">
+						<Checkbox
+							checked={options.fullPage}
+							onChange={(checked) => update("fullPage", checked)}
+							className="group flex h-5 w-5 items-center justify-center rounded border border-neutral-300 dark:border-neutral-600 data-[checked]:bg-cyan-600 data-[checked]:border-cyan-600"
+						>
+							<Check size={14} className="hidden text-white group-data-[checked]:block" aria-hidden="true" />
+						</Checkbox>
+						<Label className="cursor-pointer">{t("options.fullPage")}</Label>
+					</Field>
+					<p className="ml-7 text-xs text-neutral-500 dark:text-neutral-400">{t("options.fullPageHint")}</p>
+				</div>
 
 				<div>
-					<label className="flex items-center gap-2 text-sm">
-						<input
-							type="checkbox"
-							className="h-4 w-4"
+					<Field className="flex items-center gap-2 text-sm">
+						<Checkbox
 							checked={options.scrollThrough}
-							onChange={(event) => update("scrollThrough", event.target.checked)}
-						/>
-						{t("options.scrollThrough")}
-					</label>
-					<p className="ml-6 text-xs text-neutral-500 dark:text-neutral-400">{t("options.scrollThroughHint")}</p>
+							onChange={(checked) => update("scrollThrough", checked)}
+							className="group flex h-5 w-5 items-center justify-center rounded border border-neutral-300 dark:border-neutral-600 data-[checked]:bg-cyan-600 data-[checked]:border-cyan-600"
+						>
+							<Check size={14} className="hidden text-white group-data-[checked]:block" aria-hidden="true" />
+						</Checkbox>
+						<Label className="cursor-pointer">{t("options.scrollThrough")}</Label>
+					</Field>
+					<p className="ml-7 text-xs text-neutral-500 dark:text-neutral-400">{t("options.scrollThroughHint")}</p>
 				</div>
 
 				<div className="max-w-xs">
