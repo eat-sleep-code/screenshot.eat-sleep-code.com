@@ -101,22 +101,22 @@ export default function SettingsView() {
 				<h2 className="text-sm font-semibold mb-2">{t("settings.about")}</h2>
 				<p className="text-sm text-neutral-500 dark:text-neutral-400">{t("about.version", { version })}</p>
 
-				<button type="button" className="btn btn-secondary mt-2" onClick={handleCheckForUpdates} disabled={checking}>
-					<RefreshCcw size={16} className={checking ? "animate-spin" : ""} aria-hidden="true" />
-					{checking ? t("settings.checking") : t("settings.checkForUpdates")}
-				</button>
-				{updateStatus ? (
-					<p className="mt-2 text-sm text-neutral-500 dark:text-neutral-400">
-						{updateStatus.status === "up-to-date" && t("settings.upToDate")}
-						{updateStatus.status === "downloading" && t("settings.updateAvailable")}
-						{updateStatus.status === "downloaded" && t("settings.updateDownloaded")}
-						{updateStatus.status === "error" && updateStatus.message}
-					</p>
-				) : null}
 				{updateStatus?.status === "downloaded" ? (
 					<button type="button" className="btn btn-secondary mt-2" onClick={handleInstallUpdate}>
 						{t("settings.restartAndInstall")}
 					</button>
+				) : (
+					<button type="button" className="btn btn-secondary mt-2" onClick={handleCheckForUpdates} disabled={checking}>
+						<RefreshCcw size={16} className={checking ? "animate-spin" : ""} aria-hidden="true" />
+						{checking ? t("settings.checking") : t("settings.checkForUpdates")}
+					</button>
+				)}
+				{updateStatus && updateStatus.status !== "downloaded" ? (
+					<p className="mt-2 text-sm text-neutral-500 dark:text-neutral-400">
+						{updateStatus.status === "up-to-date" && t("settings.upToDate")}
+						{updateStatus.status === "downloading" && t("settings.updateAvailable")}
+						{updateStatus.status === "error" && updateStatus.message}
+					</p>
 				) : null}
 
 				<div className="mt-4 flex gap-4 text-sm">
