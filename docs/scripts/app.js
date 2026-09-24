@@ -24,7 +24,8 @@ function addSecondaryButton(container, label, href, downloadable) {
 	a.textContent = label;
 	a.href = href;
 	if (downloadable) a.setAttribute("download", "");
-	container.appendChild(a);
+	const macosBtn = document.getElementById("macos-download-btn");
+	container.insertBefore(a, macosBtn || null);
 }
 
 async function loadRelease() {
@@ -54,7 +55,7 @@ async function loadRelease() {
 			addSecondaryButton(buttonsContainer, PLATFORMS[key].label, asset ? asset.browser_download_url : release.html_url, Boolean(asset));
 		});
 
-		versionLine.innerHTML = `Version ${release.tag_name} &middot; <a href="${release.html_url}" target="_blank">release notes</a>`;
+		versionLine.innerHTML = `Version ${release.tag_name}`;
 	} catch (err) {
 		versionLine.textContent = "No release published yet.";
 		primaryLink.href = `https://github.com/${REPO}/releases`;

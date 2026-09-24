@@ -157,6 +157,19 @@ ul.features li::before {
 	border-color: #00bcd4;
 }
 
+.download-btn-disabled {
+	color: #8b949e;
+	border-color: #30363d;
+	background: transparent;
+	cursor: default;
+	opacity: 0.5;
+}
+
+.download-btn-disabled:hover {
+	color: #8b949e;
+	border-color: #30363d;
+}
+
 .meta-line {
 	margin-top: 1.5rem;
 	font-size: 0.85rem;
