@@ -48,7 +48,7 @@ export default function SettingsView() {
 	}
 
 	return (
-		<div className="mx-auto max-w-2xl space-y-8">
+		<div className="mx-auto max-w-4xl space-y-8">
 			<section>
 				<h2 className="text-sm font-semibold mb-2 flex items-center gap-2">
 					<Monitor size={16} aria-hidden="true" />
