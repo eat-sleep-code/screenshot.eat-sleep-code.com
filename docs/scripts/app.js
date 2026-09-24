@@ -67,3 +67,11 @@ async function loadRelease() {
 }
 
 loadRelease();
+
+const macosBtn = document.getElementById("macos-download-btn");
+if (macosBtn) {
+	macosBtn.addEventListener("click", () => macosBtn.classList.toggle("show-hover-label"));
+	document.addEventListener("click", (e) => {
+		if (!macosBtn.contains(e.target)) macosBtn.classList.remove("show-hover-label");
+	});
+}
