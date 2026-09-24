@@ -76,7 +76,7 @@ export default {
 	},
 	browsers: {
 		installing: "Setting up browser engines…",
-		installingHint: "Downloading prerequisites...",
+		installingHint: "This may take a few minutes…",
 	},
 	settings: {
 		title: "Settings",
