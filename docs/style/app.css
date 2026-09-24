@@ -124,7 +124,6 @@ ul.features li::before {
 	border: 1px solid transparent;
 	cursor: pointer;
 	transition: all 0.2s ease;
-	text-transform: uppercase;
 	letter-spacing: 0.5px;
 	text-align: center;
 }
@@ -158,16 +157,26 @@ ul.features li::before {
 }
 
 .download-btn-disabled {
+	flex-direction: column;
+	gap: 2px;
 	color: #8b949e;
+	border-style: dotted;
 	border-color: #30363d;
 	background: transparent;
 	cursor: default;
-	opacity: 0.5;
+	letter-spacing: normal;
+	opacity: 0.7;
 }
 
 .download-btn-disabled:hover {
 	color: #8b949e;
 	border-color: #30363d;
+}
+
+.download-btn-disabled .btn-subtext {
+	font-size: 0.75rem;
+	font-weight: 400;
+	color: #6e7681;
 }
 
 .meta-line {
