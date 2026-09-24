@@ -2,6 +2,15 @@ import { app, BrowserWindow, Menu, nativeTheme, session } from "electron";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
+// package.json's `productName` ("Device Screenshot Tool") has spaces, and
+// Electron uses productName (not the hyphenated `name`) for the default
+// userData path — so it resolves to e.g. ~/.config/Device Screenshot Tool.
+// Playwright's Linux WebKit launcher (pw_run.sh -> MiniBrowser) doesn't
+// quote that path safely internally, so the space breaks its exec with a
+// word-split "file not found". Pin userData to a space-free path instead.
+// Must run before app.getPath("userData") is read anywhere else.
+app.setPath("userData", join(app.getPath("appData"), "device-screenshot-tool"));
+
 // Must run before `playwright` is imported anywhere (including
 // transitively, e.g. by ./browsers.js), so install and launch agree on
 // where browser binaries live. A static `import` of anything that itself
