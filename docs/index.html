@@ -120,10 +120,15 @@
 
 		.logo {
 			font-size: 2rem;
-			font-weight: 700;
+			font-weight: 500;
 			margin-bottom: 0.5rem;
-			color: #FFFFFF;
+			color: rgba(255, 255, 255, 0.7);
 			letter-spacing: -1px;
+		}
+
+		.logo-text {
+			color: rgba(255, 255, 255, 1.0);
+			white-space: nowrap;
 		}
 
 		.subtitle {
@@ -172,7 +177,7 @@
 		}
 
 		ul.features li::before {
-			content: "\2192";
+			content: "\25CE";
 			position: absolute;
 			left: 0;
 			color: #00bcd4;
@@ -332,7 +337,7 @@
 <body>
 	<div class="container">
 		<div class="header">
-			<h1 class="logo">&lt;eat-sleep-code /&gt; Device Screenshot Tool</h1>
+			<h1 class="logo"><span class="logo-text">&lt;eat-sleep-code /&gt;</span> Device Screenshot Tool</h1>
 		</div>
 		<div class="content-box">
 			<h2>Overview</h2>
