@@ -88,6 +88,7 @@ export default {
 		upToDate: "You're up to date.",
 		updateAvailable: "An update is available and downloading.",
 		updateDownloaded: "Update downloaded — restart to install.",
+		restartAndInstall: "Restart and install",
 		sessions: "Saved sign-in sessions",
 		noSessions: "No saved sessions yet.",
 		about: "About",

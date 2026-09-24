@@ -46,6 +46,7 @@ const api = {
 	},
 	updates: {
 		check: () => ipcRenderer.invoke("updates:check"),
+		install: () => ipcRenderer.invoke("updates:install"),
 		onStatus: (callback) => subscribe("updates:status", callback),
 	},
 	app: {

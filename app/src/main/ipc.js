@@ -5,6 +5,11 @@ import { pathToFileURL } from "node:url";
 import electronUpdater from "electron-updater";
 
 const { autoUpdater } = electronUpdater;
+// Install explicitly via updates:install once the user confirms, instead of
+// electron-updater's implicit install-on-quit: that path races the NSIS
+// installer against our own app.quit() (window-all-closed), which is how the
+// old install gets removed while the new one never finishes installing.
+autoUpdater.autoInstallOnAppQuit = false;
 import { listPresets, addPreset, updatePreset, deletePreset } from "./presets.js";
 import { listDeviceFrames } from "./device-frames.js";
 import { runCapture } from "./capture.js";
@@ -128,6 +133,10 @@ export function registerIpcHandlers(getMainWindow) {
 			event.sender.send("updates:status", { status: "error", message: error.message });
 			return { updateAvailable: false, error: error.message };
 		}
+	});
+
+	ipcMain.handle("updates:install", () => {
+		autoUpdater.quitAndInstall(false, true);
 	});
 
 	nativeTheme.on("updated", () => {
