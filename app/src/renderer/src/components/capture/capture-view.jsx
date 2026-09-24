@@ -7,13 +7,7 @@ import OutputFolder from "./output-folder.jsx";
 import ProgressList from "./progress-list.jsx";
 import ThumbnailGallery from "./thumbnail-gallery.jsx";
 import { useTranslation } from "../../hooks/use-translation.jsx";
-import {
-	compositeDeviceMockup,
-	findDeviceFrameVariant,
-	matchOrientation,
-	orientationFromLabel,
-	withFilenameSuffix,
-} from "../../lib/device-mockup.js";
+import { compositeDeviceMockup, pickVariant, withFilenameSuffix } from "../../lib/device-mockup.js";
 
 const DEFAULT_OPTIONS = {
 	fullPage: false,
@@ -21,7 +15,6 @@ const DEFAULT_OPTIONS = {
 	settleDelayMs: 500,
 	injectCss: "",
 	injectJs: "",
-	deviceMockup: { enabled: false, variantId: null },
 };
 
 export default function CaptureView() {
@@ -30,6 +23,7 @@ export default function CaptureView() {
 	const [presets, setPresets] = useState([]);
 	const [deviceFrames, setDeviceFrames] = useState([]);
 	const [selections, setSelections] = useState([]);
+	const [overlaySelections, setOverlaySelections] = useState({}); // { [presetId]: string[] colors }
 	const [options, setOptions] = useState(DEFAULT_OPTIONS);
 	const [outputDir, setOutputDir] = useState(null);
 	const [sessionHost, setSessionHost] = useState(null);
@@ -87,6 +81,16 @@ export default function CaptureView() {
 		if (dir) setOutputDir(dir);
 	}
 
+	function handleOverlaySelectionsChange(presetId, colors) {
+		setOverlaySelections((current) => {
+			if (colors.length === 0) {
+				const { [presetId]: _removed, ...rest } = current;
+				return rest;
+			}
+			return { ...current, [presetId]: colors };
+		});
+	}
+
 	async function handleCapture() {
 		if (!outputDir || selections.length === 0) return;
 		setCapturing(true);
@@ -124,37 +128,50 @@ export default function CaptureView() {
 		}
 	}
 
+	// `outcome` is produced by iterating `selections` in order (capture.js pushes
+	// exactly one result per selection), so pairing them up by index recovers
+	// each result's presetId/orientation without re-parsing the display label.
 	async function generateMockups(outcome) {
-		if (!options.deviceMockup.enabled) return outcome;
-		const chosen = findDeviceFrameVariant(deviceFrames, options.deviceMockup.variantId);
-		if (!chosen) return outcome;
-
+		const deviceById = new Map(deviceFrames.map((device) => [device.id, device]));
 		const withMockups = [...outcome];
-		for (const result of outcome) {
-			if (!result.ok) continue;
-			const variant = matchOrientation(chosen.device, chosen.variant, orientationFromLabel(result.label));
-			const mockupLabel = `${result.label} — ${variant.color} mockup`;
-			setProgressItems((current) => [...current, { label: mockupLabel, status: "capturing" }]);
-			try {
-				const blob = await compositeDeviceMockup({
-					screenshotUrl: result.fileUrl,
-					frameUrl: variant.previewUrl,
-					canvasWidth: variant.canvasWidth,
-					canvasHeight: variant.canvasHeight,
-					screen: variant.screen,
-				});
-				const buffer = await blob.arrayBuffer();
-				const filename = withFilenameSuffix(result.filePath, variant.id);
-				const saved = await window.deviceScreenshotApi.deviceFrames.saveMockup(outputDir, filename, buffer);
-				setProgressItems((current) =>
-					current.map((item) => (item.label === mockupLabel ? { ...item, status: "done" } : item))
-				);
-				withMockups.push({ label: mockupLabel, filePath: saved.filePath, fileUrl: saved.fileUrl, ok: true });
-			} catch (error) {
-				setProgressItems((current) =>
-					current.map((item) => (item.label === mockupLabel ? { ...item, status: "error", message: error.message } : item))
-				);
-				withMockups.push({ label: mockupLabel, ok: false, message: error.message });
+
+		for (let i = 0; i < outcome.length; i++) {
+			const result = outcome[i];
+			const selection = selections[i];
+			if (!result.ok || !selection) continue;
+
+			const preset = presets.find((p) => p.id === selection.presetId);
+			const colors = overlaySelections[selection.presetId] ?? [];
+			const device = preset?.deviceFrameId ? deviceById.get(preset.deviceFrameId) : null;
+			if (!device || colors.length === 0) continue;
+
+			for (const color of colors) {
+				const variant = pickVariant(device, color, selection.orientation);
+				if (!variant) continue;
+
+				const mockupLabel = `${result.label} — ${color} overlay`;
+				setProgressItems((current) => [...current, { label: mockupLabel, status: "capturing" }]);
+				try {
+					const blob = await compositeDeviceMockup({
+						screenshotUrl: result.fileUrl,
+						frameUrl: variant.previewUrl,
+						canvasWidth: variant.canvasWidth,
+						canvasHeight: variant.canvasHeight,
+						screen: variant.screen,
+					});
+					const buffer = await blob.arrayBuffer();
+					const filename = withFilenameSuffix(result.filePath, variant.id);
+					const saved = await window.deviceScreenshotApi.deviceFrames.saveMockup(outputDir, filename, buffer);
+					setProgressItems((current) =>
+						current.map((item) => (item.label === mockupLabel ? { ...item, status: "done" } : item))
+					);
+					withMockups.push({ label: mockupLabel, filePath: saved.filePath, fileUrl: saved.fileUrl, ok: true });
+				} catch (error) {
+					setProgressItems((current) =>
+						current.map((item) => (item.label === mockupLabel ? { ...item, status: "error", message: error.message } : item))
+					);
+					withMockups.push({ label: mockupLabel, ok: false, message: error.message });
+				}
 			}
 		}
 		return withMockups;
@@ -206,9 +223,12 @@ export default function CaptureView() {
 						selections={selections}
 						onSelectionsChange={setSelections}
 						onPresetsChanged={loadPresets}
+						deviceFrames={deviceFrames}
+						overlaySelections={overlaySelections}
+						onOverlaySelectionsChange={handleOverlaySelectionsChange}
 					/>
 
-					<CaptureOptions options={options} onChange={setOptions} deviceFrames={deviceFrames} />
+					<CaptureOptions options={options} onChange={setOptions} />
 
 					<OutputFolder outputDir={outputDir} onChoose={handleChooseFolder} />
 

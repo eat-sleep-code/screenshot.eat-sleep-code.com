@@ -1,8 +1,9 @@
 import { useMemo, useState } from "react";
-import { Checkbox } from "@headlessui/react";
+import { Checkbox, Field, Label } from "@headlessui/react";
 import { Check, Pencil, Plus, Trash2, AlertTriangle } from "lucide-react";
 import { useTranslation } from "../../../hooks/use-translation.jsx";
 import PresetEditorModal from "./preset-editor-modal.jsx";
+import DeviceOverlayPicker from "./device-overlay-picker.jsx";
 
 function groupByFamily(presets) {
 	const groups = new Map();
@@ -13,10 +14,19 @@ function groupByFamily(presets) {
 	return groups;
 }
 
-export default function PresetPicker({ presets, selections, onSelectionsChange, onPresetsChanged }) {
+export default function PresetPicker({
+	presets,
+	selections,
+	onSelectionsChange,
+	onPresetsChanged,
+	deviceFrames,
+	overlaySelections,
+	onOverlaySelectionsChange,
+}) {
 	const t = useTranslation();
 	const [editing, setEditing] = useState(null); // null | "new" | preset object
 	const grouped = useMemo(() => groupByFamily(presets), [presets]);
+	const deviceFrameById = useMemo(() => new Map(deviceFrames.map((device) => [device.id, device])), [deviceFrames]);
 
 	const selectedOrientations = (presetId) =>
 		selections.filter((selection) => selection.presetId === presetId).map((selection) => selection.orientation);
@@ -45,6 +55,7 @@ export default function PresetPicker({ presets, selections, onSelectionsChange, 
 	async function handleDelete(preset) {
 		await window.deviceScreenshotApi.presets.remove(preset.id);
 		onSelectionsChange(selections.filter((selection) => selection.presetId !== preset.id));
+		onOverlaySelectionsChange(preset.id, []);
 		onPresetsChanged();
 	}
 
@@ -121,9 +132,9 @@ export default function PresetPicker({ presets, selections, onSelectionsChange, 
 												</div>
 											) : null}
 										</div>
-										<div className="mt-2 flex gap-3">
+										<div className="mt-2 flex flex-wrap items-center gap-3">
 											{["portrait", "landscape"].map((orientation) => (
-												<label key={orientation} className="flex items-center gap-1.5 text-sm">
+												<Field key={orientation} className="flex items-center gap-1.5 text-sm">
 													<Checkbox
 														checked={orientations.includes(orientation)}
 														onChange={() => toggleOrientation(preset.id, orientation)}
@@ -131,9 +142,16 @@ export default function PresetPicker({ presets, selections, onSelectionsChange, 
 													>
 														<Check size={14} className="hidden text-white group-data-[checked]:block" aria-hidden="true" />
 													</Checkbox>
-													{orientation === "portrait" ? t("presets.portrait") : t("presets.landscape")}
-												</label>
+													<Label className="cursor-pointer">{orientation === "portrait" ? t("presets.portrait") : t("presets.landscape")}</Label>
+												</Field>
 											))}
+											{preset.deviceFrameId && deviceFrameById.has(preset.deviceFrameId) ? (
+												<DeviceOverlayPicker
+													device={deviceFrameById.get(preset.deviceFrameId)}
+													selectedColors={overlaySelections[preset.id] ?? []}
+													onChange={(colors) => onOverlaySelectionsChange(preset.id, colors)}
+												/>
+											) : null}
 										</div>
 									</div>
 								);

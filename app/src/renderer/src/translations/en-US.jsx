@@ -23,6 +23,10 @@ export default {
 		builtIn: "Built in",
 		custom: "Custom",
 		needsVerification: "Dimensions not from Playwright's device registry — verify before relying on this preset.",
+		deviceOverlay: "Device overlay",
+		deviceOverlayHint: "Composites the screenshot into a real device frame (from Apple's official design resources), saved alongside the plain screenshot.",
+		deviceOverlayNone: "None",
+		deviceOverlayCount: "{count} selected",
 		form: {
 			name: "Name",
 			family: "Group",
@@ -38,7 +42,7 @@ export default {
 		},
 	},
 	options: {
-		title: "Capture options",
+		title: "Advanced options",
 		fullPage: "Full page (not just the viewport)",
 		scrollThrough: "Scroll through the page before capturing",
 		scrollThroughHint: "Triggers lazy-loaded images and infinite-scroll sections.",
@@ -47,9 +51,6 @@ export default {
 		injectCssPlaceholder: "e.g. hide a cookie banner: #cookie-banner { display: none !important; }",
 		injectJs: "Inject JavaScript (optional)",
 		injectJsPlaceholder: "Runs after the page loads, before the screenshot",
-		deviceMockup: "Also generate a device mockup",
-		deviceMockupHint: "Composites each screenshot into a real device frame (from Apple's official design resources), saved alongside the plain screenshot.",
-		deviceMockupVariant: "Device & color",
 	},
 	output: {
 		title: "Output folder",

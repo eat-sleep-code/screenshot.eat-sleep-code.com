@@ -43,32 +43,19 @@ export async function compositeDeviceMockup({ screenshotUrl, frameUrl, canvasWid
 	});
 }
 
-export function findDeviceFrameVariant(deviceFrames, variantId) {
-	for (const device of deviceFrames) {
-		const variant = device.variants.find((v) => v.id === variantId);
-		if (variant) return { device, variant };
-	}
-	return null;
-}
-
 /**
- * Devices with both orientations (phones, tablets) ship separate portrait
- * and landscape frame PNGs. If the requested variant doesn't match the
- * screenshot's orientation, swap to its same-color sibling so a batch of
- * mixed portrait/landscape captures doesn't get force-cropped into the
- * wrong frame shape.
+ * Picks the frame variant for `color` that matches `orientation`. Devices
+ * with both orientations (phones, tablets) ship separate portrait/landscape
+ * PNGs per color; devices with a single fixed shape (laptops, displays)
+ * have one variant per color with orientation: null, which fits either.
  */
-export function matchOrientation(device, variant, orientation) {
-	if (!orientation || variant.orientation === orientation) return variant;
-	const sibling = device.variants.find((v) => v.color === variant.color && v.orientation === orientation);
-	return sibling ?? variant;
-}
-
-/** Recovers "portrait"/"landscape" from a capture result's label, e.g. "iPhone 18 Pro (portrait)". */
-export function orientationFromLabel(label) {
-	if (label.endsWith("(portrait)")) return "portrait";
-	if (label.endsWith("(landscape)")) return "landscape";
-	return null;
+export function pickVariant(device, color, orientation) {
+	return (
+		device.variants.find((v) => v.color === color && v.orientation === orientation) ??
+		device.variants.find((v) => v.color === color && v.orientation == null) ??
+		device.variants.find((v) => v.color === color) ??
+		null
+	);
 }
 
 /** Inserts `suffix` before the extension of a filename or full path. */
