@@ -67,6 +67,7 @@ export default {
 		statusCapturing: "Capturing",
 		statusDone: "Done",
 		statusError: "Error",
+		open: "Open",
 	},
 	browsers: {
 		installing: "Setting up browser engines…",

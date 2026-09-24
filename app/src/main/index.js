@@ -1,4 +1,4 @@
-import { app, BrowserWindow, nativeTheme, session } from "electron";
+import { app, BrowserWindow, Menu, nativeTheme, session } from "electron";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -64,6 +64,9 @@ function createWindow() {
 
 	return mainWindow;
 }
+
+// No File/Edit/View/Window menu — standard window chrome is enough.
+Menu.setApplicationMenu(null);
 
 app.whenReady().then(() => {
 	session.defaultSession.webRequest.onHeadersReceived((details, callback) => {

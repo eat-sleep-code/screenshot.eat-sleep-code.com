@@ -49,6 +49,11 @@ export function registerIpcHandlers(getMainWindow) {
 		return shell.openPath(dir);
 	});
 
+	ipcMain.handle("output:openFile", (_event, filePath) => {
+		if (typeof filePath !== "string") badRequest("output file");
+		return shell.openPath(filePath);
+	});
+
 	ipcMain.handle("capture:start", async (event, request) => {
 		if (!isValidCaptureRequest(request)) badRequest("capture request");
 		const presets = listPresets();

@@ -2,8 +2,12 @@
 app/out/
 app/dist/
 
+
 # dependencies
 node_modules/
+package-lock.json
+app/package-lock.json
+docs/package-lock.json
 
 # Playwright browser cache, if ever downloaded into the repo by accident
 app/data/browsers/
@@ -11,3 +15,4 @@ app/data/browsers/
 # OS cruft
 .DS_Store
 Thumbs.db
+

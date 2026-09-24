@@ -17,6 +17,7 @@ const api = {
 		chooseFolder: () => ipcRenderer.invoke("output:chooseFolder"),
 		getLast: () => ipcRenderer.invoke("output:getLast"),
 		openFolder: (dir) => ipcRenderer.invoke("output:openFolder", dir),
+		openFile: (filePath) => ipcRenderer.invoke("output:openFile", filePath),
 	},
 	capture: {
 		start: (request) => ipcRenderer.invoke("capture:start", request),

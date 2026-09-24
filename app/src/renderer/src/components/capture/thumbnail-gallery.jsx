@@ -12,13 +12,20 @@ export default function ThumbnailGallery({ results }) {
 				{succeeded.map((result) => (
 					<figure
 						key={result.filePath}
-						className="rounded-md border border-neutral-200 dark:border-neutral-800 overflow-hidden"
+						className="group relative rounded-md border border-neutral-200 dark:border-neutral-800 overflow-hidden"
 					>
 						<img
 							src={result.fileUrl}
 							alt={result.label}
 							className="w-full h-32 object-cover bg-neutral-100 dark:bg-neutral-900"
 						/>
+						<button
+							type="button"
+							onClick={() => window.deviceScreenshotApi.output.openFile(result.filePath)}
+							className="absolute inset-0 flex items-center justify-center bg-black/50 text-white text-xs font-medium opacity-0 group-hover:opacity-100 focus-visible:opacity-100 transition-opacity"
+						>
+							{t("capture.open")}
+						</button>
 						<figcaption className="px-2 py-1 text-xs truncate">{result.label}</figcaption>
 					</figure>
 				))}
