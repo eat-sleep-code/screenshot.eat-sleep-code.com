@@ -72,16 +72,9 @@
 		}
 
 		h2 {
-			font-size: 1.8rem;
+			font-size: 1.1rem;
 			margin-bottom: 1.5rem;
 			color: #00bcd4;
-			font-weight: 600;
-		}
-
-		h3 {
-			font-size: 1.1rem;
-			margin: 2rem 0 1rem;
-			color: #e6edf3;
 			font-weight: 600;
 		}
 
@@ -222,13 +215,12 @@
 <body>
 	<div class="container">
 		<div class="header">
-			<div class="logo">&lt;eat-sleep-code /&gt; Apps</div>
+			<h1 class="logo">&lt;eat-sleep-code /&gt; Device Screenshot Tool</h1>
 		</div>
 		<div class="content-box">
-			<h2>Device Screenshot Tool</h2>
-
+			<h2>Overview</h2>
 			<p>
-				A desktop app that captures screenshots of any website — including internal, VPN-only, and localhost apps — across a full set of device presets: current iPhones, Pixels, Galaxy and Pixel foldables, and a handful of desktop/tablet sizes.
+				A desktop app that captures screenshots of any website — including internal, VPN-only, and localhost apps — across a full set of device presets, including the current iPhone and Pixel models, and a handful of desktop/tablet sizes.
 			</p>
 
 			<ul class="features">
@@ -238,7 +230,7 @@
 				<li>Custom device presets, alongside the built-in list</li>
 			</ul>
 
-			<h3>Download</h3>
+			<h2>Download</h2>
 			<div class="download-buttons" id="download-buttons">
 				<a id="primary-download" class="download-btn download-btn-primary" href="#" download>
 					<span id="primary-os">your platform</span>
@@ -257,8 +249,6 @@
 	</div>
 
 	<script>
-		// GitHub repo that publishes installers via electron-builder + electron-updater.
-		// Placeholder until Jeff confirms the app's GitHub repo (see CLAUDE.md open items).
 		const REPO = "eat-sleep-code/screenshot.eat-sleep-code.com";
 
 		const PLATFORMS = {
