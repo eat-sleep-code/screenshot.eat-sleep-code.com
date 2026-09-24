@@ -19,8 +19,9 @@ function pickAsset(assets, platformKey) {
 }
 
 function showNotice(platformKey) {
-	const notice = document.querySelector(`.smartscreen-notice[data-platform="${platformKey}"]`);
-	if (notice) notice.classList.remove("hidden");
+	document.querySelectorAll(".smartscreen-notice").forEach((notice) => {
+		notice.classList.toggle("hidden", notice.dataset.platform !== platformKey);
+	});
 }
 
 function addSecondaryButton(container, label, href, downloadable, platformKey) {

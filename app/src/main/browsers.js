@@ -1,6 +1,7 @@
 import { app } from "electron";
 import { spawn } from "node:child_process";
 import { existsSync, mkdirSync, writeFileSync } from "node:fs";
+import { platform } from "node:os";
 import { join } from "node:path";
 import { chromium, webkit } from "playwright";
 
@@ -29,6 +30,49 @@ function driverCliPath() {
 	// archives can't run playwright's own child-process driver scripts.
 	const appPath = app.isPackaged ? app.getAppPath().replace("app.asar", "app.asar.unpacked") : app.getAppPath();
 	return join(appPath, "node_modules", "playwright", "cli.js");
+}
+
+// On Linux, Chromium/WebKit also need a set of system shared libraries
+// (nss, atk, gtk, etc.) that Playwright's browser download alone doesn't
+// provide — without them, launch() fails with a "missing dependencies"
+// error. `playwright install-deps` installs those via apt/dnf/etc, but
+// that needs root. We elevate through pkexec so users get a normal GUI
+// auth prompt instead of a silent failure or a hung sudo waiting on a
+// password on a terminal that doesn't exist. `env` (not our own env
+// object) is used to hand the elevated process the one var it needs,
+// since pkexec sanitizes the environment it inherits from us.
+function installDepsCommand() {
+	return ["env", "ELECTRON_RUN_AS_NODE=1", process.execPath, driverCliPath(), "install-deps", "chromium", "webkit"];
+}
+
+function installLinuxDeps(onProgress) {
+	if (platform() !== "linux") return Promise.resolve();
+	onProgress?.("Installing system libraries required by Chromium/WebKit (you may be prompted for your password)...");
+	return new Promise((resolve) => {
+		const child = spawn("pkexec", installDepsCommand(), { windowsHide: true });
+
+		const emit = (chunk) => {
+			const text = chunk.toString("utf-8");
+			text
+				.split(/\r?\n/)
+				.filter(Boolean)
+				.forEach((line) => onProgress?.(line));
+		};
+
+		child.stdout?.on("data", emit);
+		child.stderr?.on("data", emit);
+
+		child.on("error", (err) => {
+			onProgress?.(`Couldn't run the system dependency installer (${err.message}). If screenshots fail to launch, run: sudo npx playwright install-deps`);
+			resolve();
+		});
+		child.on("close", (code) => {
+			if (code !== 0) {
+				onProgress?.("System dependency install didn't complete. If screenshots fail to launch, run: sudo npx playwright install-deps");
+			}
+			resolve();
+		});
+	});
 }
 
 export function installBrowsers(onProgress) {
@@ -62,7 +106,7 @@ export function installBrowsers(onProgress) {
 			if (code === 0) {
 				mkdirSync(browsersCacheDir(), { recursive: true });
 				writeFileSync(markerPath(), new Date().toISOString());
-				resolve();
+				installLinuxDeps(onProgress).then(resolve);
 			} else {
 				reject(new Error(`playwright install exited with code ${code}`));
 			}
