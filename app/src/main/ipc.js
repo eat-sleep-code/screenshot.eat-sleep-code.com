@@ -1,13 +1,19 @@
 import { ipcMain, dialog, shell, nativeTheme, app } from "electron";
+import { writeFileSync } from "node:fs";
+import { join } from "node:path";
+import { pathToFileURL } from "node:url";
 import electronUpdater from "electron-updater";
 
 const { autoUpdater } = electronUpdater;
 import { listPresets, addPreset, updatePreset, deletePreset } from "./presets.js";
+import { listDeviceFrames } from "./device-frames.js";
 import { runCapture } from "./capture.js";
 import { signIn, listSessions, removeSession, hasSession } from "./sessions.js";
 import { areBrowsersInstalled, installBrowsers } from "./browsers.js";
 import { getSetting, setSetting } from "./store.js";
 import { isValidUrl, isValidCaptureRequest, isValidPresetDefinition, isValidHost } from "./validate.js";
+
+const SAFE_MOCKUP_FILENAME = /^[a-z0-9._-]+\.png$/i;
 
 function badRequest(message) {
 	throw new Error(`Invalid request: ${message}`);
@@ -29,6 +35,16 @@ export function registerIpcHandlers(getMainWindow) {
 	ipcMain.handle("presets:delete", (_event, id) => {
 		if (typeof id !== "string") badRequest("preset id");
 		deletePreset(id);
+	});
+
+	ipcMain.handle("deviceFrames:list", () => listDeviceFrames());
+
+	ipcMain.handle("deviceFrames:saveMockup", (_event, { outputDir, filename, buffer }) => {
+		if (typeof outputDir !== "string" || outputDir.trim() === "") badRequest("output dir");
+		if (typeof filename !== "string" || !SAFE_MOCKUP_FILENAME.test(filename)) badRequest("mockup filename");
+		const filePath = join(outputDir, filename);
+		writeFileSync(filePath, Buffer.from(buffer));
+		return { filePath, fileUrl: pathToFileURL(filePath).href };
 	});
 
 	ipcMain.handle("output:chooseFolder", async () => {

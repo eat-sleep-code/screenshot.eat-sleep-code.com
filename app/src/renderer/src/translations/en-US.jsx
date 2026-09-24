@@ -47,6 +47,9 @@ export default {
 		injectCssPlaceholder: "e.g. hide a cookie banner: #cookie-banner { display: none !important; }",
 		injectJs: "Inject JavaScript (optional)",
 		injectJsPlaceholder: "Runs after the page loads, before the screenshot",
+		deviceMockup: "Also generate a device mockup",
+		deviceMockupHint: "Composites each screenshot into a real device frame (from Apple's official design resources), saved alongside the plain screenshot.",
+		deviceMockupVariant: "Device & color",
 	},
 	output: {
 		title: "Output folder",

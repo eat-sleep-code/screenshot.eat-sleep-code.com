@@ -1,11 +1,15 @@
 import { ChevronRight } from "lucide-react";
 import { useTranslation } from "../../hooks/use-translation.jsx";
 
-export default function CaptureOptions({ options, onChange }) {
+export default function CaptureOptions({ options, onChange, deviceFrames }) {
 	const t = useTranslation();
 
 	function update(field, value) {
 		onChange({ ...options, [field]: value });
+	}
+
+	function updateDeviceMockup(field, value) {
+		update("deviceMockup", { ...options.deviceMockup, [field]: value });
 	}
 
 	return (
@@ -36,6 +40,48 @@ export default function CaptureOptions({ options, onChange }) {
 						{t("options.scrollThrough")}
 					</label>
 					<p className="ml-6 text-xs text-neutral-500 dark:text-neutral-400">{t("options.scrollThroughHint")}</p>
+				</div>
+
+				<div>
+					<label className="flex items-center gap-2 text-sm">
+						<input
+							type="checkbox"
+							className="h-4 w-4"
+							checked={options.deviceMockup.enabled}
+							onChange={(event) => {
+								const enabled = event.target.checked;
+								const variantId = options.deviceMockup.variantId ?? deviceFrames[0]?.variants[0]?.id ?? null;
+								update("deviceMockup", { enabled, variantId });
+							}}
+						/>
+						{t("options.deviceMockup")}
+					</label>
+					<p className="ml-6 text-xs text-neutral-500 dark:text-neutral-400">{t("options.deviceMockupHint")}</p>
+
+					{options.deviceMockup.enabled ? (
+						<div className="ml-6 mt-2 max-w-xs">
+							<label className="field-label" htmlFor="device-mockup-variant">
+								{t("options.deviceMockupVariant")}
+							</label>
+							<select
+								id="device-mockup-variant"
+								className="field-input"
+								value={options.deviceMockup.variantId ?? ""}
+								onChange={(event) => updateDeviceMockup("variantId", event.target.value)}
+							>
+								{deviceFrames.map((device) => (
+									<optgroup key={device.id} label={device.label}>
+										{device.variants.map((variant) => (
+											<option key={variant.id} value={variant.id}>
+												{variant.color}
+												{variant.orientation ? ` (${variant.orientation === "portrait" ? t("presets.portrait") : t("presets.landscape")})` : ""}
+											</option>
+										))}
+									</optgroup>
+								))}
+							</select>
+						</div>
+					) : null}
 				</div>
 
 				<div className="max-w-xs">

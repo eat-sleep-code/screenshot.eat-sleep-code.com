@@ -10,6 +10,11 @@ docs/package-lock.json
 # Playwright browser cache, if ever downloaded into the repo by accident
 app/data/browsers/
 
+# Raw Apple Design Resources disk images (hundreds of MB each) — only the
+# PNG frames extracted from them (resources/devices/frames/) are committed
+# and shipped; see app/scripts/build-device-frames-manifest.mjs.
+app/resources/devices/*.dmg
+
 # OS cruft
 .DS_Store
 Thumbs.db

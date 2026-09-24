@@ -1,3 +1,4 @@
+import { ExternalLink } from "lucide-react";
 import { useTranslation } from "../../hooks/use-translation.jsx";
 
 export default function ThumbnailGallery({ results }) {
@@ -22,9 +23,13 @@ export default function ThumbnailGallery({ results }) {
 						<button
 							type="button"
 							onClick={() => window.deviceScreenshotApi.output.openFile(result.filePath)}
-							className="absolute inset-0 flex items-center justify-center bg-black/50 text-white text-xs font-medium opacity-0 group-hover:opacity-100 focus-visible:opacity-100 transition-opacity"
+							aria-label={t("capture.open")}
+							title={t("capture.open")}
+							className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 focus-visible:opacity-100 transition-opacity"
 						>
-							{t("capture.open")}
+							<span className="flex h-9 w-9 items-center justify-center rounded-full bg-cyan-800 dark:bg-cyan-900">
+								<ExternalLink size={16} className="text-cyan-200" aria-hidden="true" />
+							</span>
 						</button>
 						<figcaption className="px-2 py-1 text-xs truncate">{result.label}</figcaption>
 					</figure>

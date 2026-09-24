@@ -11,8 +11,7 @@ export default function AppShell({ activeTab, onTabChange, children }) {
 
 	return (
 		<div className="flex h-full flex-col">
-			<header className="flex items-center justify-between border-b border-neutral-200 dark:border-neutral-800 px-6 py-3">
-				<h1 className="text-base font-semibold">{t("app.title")}</h1>
+			<header className="flex items-center justify-end border-b border-neutral-200 dark:border-neutral-800 px-6 pt-6 pb-3">
 				<nav className="flex gap-1" aria-label={t("app.title")}>
 					{TABS.map(({ id, icon: Icon, labelKey }) => (
 						<button

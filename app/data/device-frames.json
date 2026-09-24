@@ -1,0 +1,816 @@
+{
+	"devices": [
+		{
+			"id": "iphone-18-pro",
+			"label": "iPhone 18 Pro",
+			"family": "Phones",
+			"variants": [
+				{
+					"id": "iphone-18-pro-black-landscape",
+					"color": "Black",
+					"orientation": "landscape",
+					"file": "iphone-18-pro/black-landscape.png",
+					"canvasWidth": 2760,
+					"canvasHeight": 1350,
+					"screen": {
+						"x": 69,
+						"y": 72,
+						"width": 2622,
+						"height": 1206
+					}
+				},
+				{
+					"id": "iphone-18-pro-black-portrait",
+					"color": "Black",
+					"orientation": "portrait",
+					"file": "iphone-18-pro/black-portrait.png",
+					"canvasWidth": 1350,
+					"canvasHeight": 2760,
+					"screen": {
+						"x": 72,
+						"y": 69,
+						"width": 1206,
+						"height": 2622
+					}
+				},
+				{
+					"id": "iphone-18-pro-burgundy-landscape",
+					"color": "Burgundy",
+					"orientation": "landscape",
+					"file": "iphone-18-pro/burgundy-landscape.png",
+					"canvasWidth": 2760,
+					"canvasHeight": 1350,
+					"screen": {
+						"x": 69,
+						"y": 72,
+						"width": 2622,
+						"height": 1206
+					}
+				},
+				{
+					"id": "iphone-18-pro-burgundy-portrait",
+					"color": "Burgundy",
+					"orientation": "portrait",
+					"file": "iphone-18-pro/burgundy-portrait.png",
+					"canvasWidth": 1350,
+					"canvasHeight": 2760,
+					"screen": {
+						"x": 72,
+						"y": 69,
+						"width": 1206,
+						"height": 2622
+					}
+				},
+				{
+					"id": "iphone-18-pro-glacier-landscape",
+					"color": "Glacier",
+					"orientation": "landscape",
+					"file": "iphone-18-pro/glacier-landscape.png",
+					"canvasWidth": 2760,
+					"canvasHeight": 1350,
+					"screen": {
+						"x": 69,
+						"y": 72,
+						"width": 2622,
+						"height": 1206
+					}
+				},
+				{
+					"id": "iphone-18-pro-glacier-portrait",
+					"color": "Glacier",
+					"orientation": "portrait",
+					"file": "iphone-18-pro/glacier-portrait.png",
+					"canvasWidth": 1350,
+					"canvasHeight": 2760,
+					"screen": {
+						"x": 72,
+						"y": 69,
+						"width": 1206,
+						"height": 2622
+					}
+				},
+				{
+					"id": "iphone-18-pro-silver-landscape",
+					"color": "Silver",
+					"orientation": "landscape",
+					"file": "iphone-18-pro/silver-landscape.png",
+					"canvasWidth": 2760,
+					"canvasHeight": 1350,
+					"screen": {
+						"x": 69,
+						"y": 72,
+						"width": 2622,
+						"height": 1206
+					}
+				},
+				{
+					"id": "iphone-18-pro-silver-portrait",
+					"color": "Silver",
+					"orientation": "portrait",
+					"file": "iphone-18-pro/silver-portrait.png",
+					"canvasWidth": 1350,
+					"canvasHeight": 2760,
+					"screen": {
+						"x": 72,
+						"y": 69,
+						"width": 1206,
+						"height": 2622
+					}
+				}
+			]
+		},
+		{
+			"id": "iphone-18-pro-max",
+			"label": "iPhone 18 Pro Max",
+			"family": "Phones",
+			"variants": [
+				{
+					"id": "iphone-18-pro-max-black-landscape",
+					"color": "Black",
+					"orientation": "landscape",
+					"file": "iphone-18-pro-max/black-landscape.png",
+					"canvasWidth": 3000,
+					"canvasHeight": 1470,
+					"screen": {
+						"x": 66,
+						"y": 76,
+						"width": 2868,
+						"height": 1320
+					}
+				},
+				{
+					"id": "iphone-18-pro-max-black-portrait",
+					"color": "Black",
+					"orientation": "portrait",
+					"file": "iphone-18-pro-max/black-portrait.png",
+					"canvasWidth": 1470,
+					"canvasHeight": 3000,
+					"screen": {
+						"x": 75,
+						"y": 66,
+						"width": 1320,
+						"height": 2868
+					}
+				},
+				{
+					"id": "iphone-18-pro-max-burgundy-landscape",
+					"color": "Burgundy",
+					"orientation": "landscape",
+					"file": "iphone-18-pro-max/burgundy-landscape.png",
+					"canvasWidth": 3000,
+					"canvasHeight": 1470,
+					"screen": {
+						"x": 66,
+						"y": 76,
+						"width": 2868,
+						"height": 1320
+					}
+				},
+				{
+					"id": "iphone-18-pro-max-burgundy-portrait",
+					"color": "Burgundy",
+					"orientation": "portrait",
+					"file": "iphone-18-pro-max/burgundy-portrait.png",
+					"canvasWidth": 1470,
+					"canvasHeight": 3000,
+					"screen": {
+						"x": 75,
+						"y": 66,
+						"width": 1320,
+						"height": 2868
+					}
+				},
+				{
+					"id": "iphone-18-pro-max-glacier-landscape",
+					"color": "Glacier",
+					"orientation": "landscape",
+					"file": "iphone-18-pro-max/glacier-landscape.png",
+					"canvasWidth": 3000,
+					"canvasHeight": 1470,
+					"screen": {
+						"x": 66,
+						"y": 76,
+						"width": 2868,
+						"height": 1320
+					}
+				},
+				{
+					"id": "iphone-18-pro-max-glacier-portrait",
+					"color": "Glacier",
+					"orientation": "portrait",
+					"file": "iphone-18-pro-max/glacier-portrait.png",
+					"canvasWidth": 1470,
+					"canvasHeight": 3000,
+					"screen": {
+						"x": 75,
+						"y": 66,
+						"width": 1320,
+						"height": 2868
+					}
+				},
+				{
+					"id": "iphone-18-pro-max-silver-landscape",
+					"color": "Silver",
+					"orientation": "landscape",
+					"file": "iphone-18-pro-max/silver-landscape.png",
+					"canvasWidth": 3000,
+					"canvasHeight": 1470,
+					"screen": {
+						"x": 66,
+						"y": 76,
+						"width": 2868,
+						"height": 1320
+					}
+				},
+				{
+					"id": "iphone-18-pro-max-silver-portrait",
+					"color": "Silver",
+					"orientation": "portrait",
+					"file": "iphone-18-pro-max/silver-portrait.png",
+					"canvasWidth": 1470,
+					"canvasHeight": 3000,
+					"screen": {
+						"x": 75,
+						"y": 66,
+						"width": 1320,
+						"height": 2868
+					}
+				}
+			]
+		},
+		{
+			"id": "iphone-duo",
+			"label": "iPhone Duo",
+			"family": "Foldables",
+			"variants": [
+				{
+					"id": "iphone-duo-night-sky-inner-open-landscape",
+					"color": "Night Sky Inner Open",
+					"orientation": "landscape",
+					"file": "iphone-duo/night-sky-inner-open-landscape.png",
+					"canvasWidth": 3093,
+					"canvasHeight": 2247,
+					"screen": {
+						"x": 120,
+						"y": 120,
+						"width": 2853,
+						"height": 2007
+					}
+				},
+				{
+					"id": "iphone-duo-night-sky-inner-open-portrait",
+					"color": "Night Sky Inner Open",
+					"orientation": "portrait",
+					"file": "iphone-duo/night-sky-inner-open-portrait.png",
+					"canvasWidth": 2247,
+					"canvasHeight": 3093,
+					"screen": {
+						"x": 120,
+						"y": 120,
+						"width": 2007,
+						"height": 2853
+					}
+				},
+				{
+					"id": "iphone-duo-night-sky-outer-closed-landscape",
+					"color": "Night Sky Outer Closed",
+					"orientation": "landscape",
+					"file": "iphone-duo/night-sky-outer-closed-landscape.png",
+					"canvasWidth": 2194,
+					"canvasHeight": 1574,
+					"screen": {
+						"x": 80,
+						"y": 88,
+						"width": 2034,
+						"height": 1398
+					}
+				},
+				{
+					"id": "iphone-duo-night-sky-outer-closed-portrait",
+					"color": "Night Sky Outer Closed",
+					"orientation": "portrait",
+					"file": "iphone-duo/night-sky-outer-closed-portrait.png",
+					"canvasWidth": 1574,
+					"canvasHeight": 2194,
+					"screen": {
+						"x": 88,
+						"y": 80,
+						"width": 1398,
+						"height": 2034
+					}
+				},
+				{
+					"id": "iphone-duo-star-white-inner-open-landscape",
+					"color": "Star White Inner Open",
+					"orientation": "landscape",
+					"file": "iphone-duo/star-white-inner-open-landscape.png",
+					"canvasWidth": 3093,
+					"canvasHeight": 2247,
+					"screen": {
+						"x": 120,
+						"y": 120,
+						"width": 2853,
+						"height": 2007
+					}
+				},
+				{
+					"id": "iphone-duo-star-white-inner-open-portrait",
+					"color": "Star White Inner Open",
+					"orientation": "portrait",
+					"file": "iphone-duo/star-white-inner-open-portrait.png",
+					"canvasWidth": 2247,
+					"canvasHeight": 3093,
+					"screen": {
+						"x": 120,
+						"y": 120,
+						"width": 2007,
+						"height": 2853
+					}
+				},
+				{
+					"id": "iphone-duo-star-white-outer-closed-landscape",
+					"color": "Star White Outer Closed",
+					"orientation": "landscape",
+					"file": "iphone-duo/star-white-outer-closed-landscape.png",
+					"canvasWidth": 2194,
+					"canvasHeight": 1574,
+					"screen": {
+						"x": 80,
+						"y": 88,
+						"width": 2034,
+						"height": 1398
+					}
+				},
+				{
+					"id": "iphone-duo-star-white-outer-closed-portrait",
+					"color": "Star White Outer Closed",
+					"orientation": "portrait",
+					"file": "iphone-duo/star-white-outer-closed-portrait.png",
+					"canvasWidth": 1574,
+					"canvasHeight": 2194,
+					"screen": {
+						"x": 88,
+						"y": 80,
+						"width": 1398,
+						"height": 2034
+					}
+				}
+			]
+		},
+		{
+			"id": "ipad-pro-11",
+			"label": "iPad Pro 11\"",
+			"family": "Tablets",
+			"variants": [
+				{
+					"id": "ipad-pro-11-silver-landscape",
+					"color": "Silver",
+					"orientation": "landscape",
+					"file": "ipad-pro-11/silver-landscape.png",
+					"canvasWidth": 2640,
+					"canvasHeight": 1880,
+					"screen": {
+						"x": 110,
+						"y": 106,
+						"width": 2420,
+						"height": 1668
+					}
+				},
+				{
+					"id": "ipad-pro-11-silver-portrait",
+					"color": "Silver",
+					"orientation": "portrait",
+					"file": "ipad-pro-11/silver-portrait.png",
+					"canvasWidth": 1880,
+					"canvasHeight": 2640,
+					"screen": {
+						"x": 106,
+						"y": 110,
+						"width": 1668,
+						"height": 2420
+					}
+				},
+				{
+					"id": "ipad-pro-11-space-black-landscape",
+					"color": "Space Black",
+					"orientation": "landscape",
+					"file": "ipad-pro-11/space-black-landscape.png",
+					"canvasWidth": 2640,
+					"canvasHeight": 1880,
+					"screen": {
+						"x": 110,
+						"y": 106,
+						"width": 2420,
+						"height": 1668
+					}
+				},
+				{
+					"id": "ipad-pro-11-space-black-portrait",
+					"color": "Space Black",
+					"orientation": "portrait",
+					"file": "ipad-pro-11/space-black-portrait.png",
+					"canvasWidth": 1880,
+					"canvasHeight": 2640,
+					"screen": {
+						"x": 106,
+						"y": 110,
+						"width": 1668,
+						"height": 2420
+					}
+				}
+			]
+		},
+		{
+			"id": "ipad-pro-13",
+			"label": "iPad Pro 13\"",
+			"family": "Tablets",
+			"variants": [
+				{
+					"id": "ipad-pro-13-silver-landscape",
+					"color": "Silver",
+					"orientation": "landscape",
+					"file": "ipad-pro-13/silver-landscape.png",
+					"canvasWidth": 3000,
+					"canvasHeight": 2300,
+					"screen": {
+						"x": 124,
+						"y": 118,
+						"width": 2752,
+						"height": 2064
+					}
+				},
+				{
+					"id": "ipad-pro-13-silver-portrait",
+					"color": "Silver",
+					"orientation": "portrait",
+					"file": "ipad-pro-13/silver-portrait.png",
+					"canvasWidth": 2300,
+					"canvasHeight": 3000,
+					"screen": {
+						"x": 118,
+						"y": 124,
+						"width": 2064,
+						"height": 2752
+					}
+				},
+				{
+					"id": "ipad-pro-13-space-black-landscape",
+					"color": "Space Black",
+					"orientation": "landscape",
+					"file": "ipad-pro-13/space-black-landscape.png",
+					"canvasWidth": 3000,
+					"canvasHeight": 2300,
+					"screen": {
+						"x": 124,
+						"y": 118,
+						"width": 2752,
+						"height": 2064
+					}
+				},
+				{
+					"id": "ipad-pro-13-space-black-portrait",
+					"color": "Space Black",
+					"orientation": "portrait",
+					"file": "ipad-pro-13/space-black-portrait.png",
+					"canvasWidth": 2300,
+					"canvasHeight": 3000,
+					"screen": {
+						"x": 118,
+						"y": 124,
+						"width": 2064,
+						"height": 2752
+					}
+				}
+			]
+		},
+		{
+			"id": "macbook-air-13",
+			"label": "MacBook Air 13-inch",
+			"family": "Laptops",
+			"variants": [
+				{
+					"id": "macbook-air-13-midnight",
+					"color": "Midnight",
+					"orientation": null,
+					"file": "macbook-air-13/midnight.png",
+					"canvasWidth": 3400,
+					"canvasHeight": 2240,
+					"screen": {
+						"x": 420,
+						"y": 288,
+						"width": 2560,
+						"height": 1664
+					}
+				},
+				{
+					"id": "macbook-air-13-silver",
+					"color": "Silver",
+					"orientation": null,
+					"file": "macbook-air-13/silver.png",
+					"canvasWidth": 3400,
+					"canvasHeight": 2240,
+					"screen": {
+						"x": 420,
+						"y": 288,
+						"width": 2560,
+						"height": 1664
+					}
+				},
+				{
+					"id": "macbook-air-13-sky-blue",
+					"color": "Sky Blue",
+					"orientation": null,
+					"file": "macbook-air-13/sky-blue.png",
+					"canvasWidth": 3400,
+					"canvasHeight": 2240,
+					"screen": {
+						"x": 420,
+						"y": 288,
+						"width": 2560,
+						"height": 1664
+					}
+				},
+				{
+					"id": "macbook-air-13-starlight",
+					"color": "Starlight",
+					"orientation": null,
+					"file": "macbook-air-13/starlight.png",
+					"canvasWidth": 3400,
+					"canvasHeight": 2240,
+					"screen": {
+						"x": 420,
+						"y": 288,
+						"width": 2560,
+						"height": 1664
+					}
+				}
+			]
+		},
+		{
+			"id": "macbook-air-15",
+			"label": "MacBook Air 15-inch",
+			"family": "Laptops",
+			"variants": [
+				{
+					"id": "macbook-air-15-midnight",
+					"color": "Midnight",
+					"orientation": null,
+					"file": "macbook-air-15/midnight.png",
+					"canvasWidth": 3540,
+					"canvasHeight": 2300,
+					"screen": {
+						"x": 329,
+						"y": 218,
+						"width": 2880,
+						"height": 1864
+					}
+				},
+				{
+					"id": "macbook-air-15-silver",
+					"color": "Silver",
+					"orientation": null,
+					"file": "macbook-air-15/silver.png",
+					"canvasWidth": 3540,
+					"canvasHeight": 2300,
+					"screen": {
+						"x": 329,
+						"y": 218,
+						"width": 2880,
+						"height": 1864
+					}
+				},
+				{
+					"id": "macbook-air-15-sky-blue",
+					"color": "Sky Blue",
+					"orientation": null,
+					"file": "macbook-air-15/sky-blue.png",
+					"canvasWidth": 3540,
+					"canvasHeight": 2300,
+					"screen": {
+						"x": 329,
+						"y": 218,
+						"width": 2880,
+						"height": 1864
+					}
+				},
+				{
+					"id": "macbook-air-15-starlight",
+					"color": "Starlight",
+					"orientation": null,
+					"file": "macbook-air-15/starlight.png",
+					"canvasWidth": 3540,
+					"canvasHeight": 2300,
+					"screen": {
+						"x": 329,
+						"y": 218,
+						"width": 2880,
+						"height": 1864
+					}
+				}
+			]
+		},
+		{
+			"id": "macbook-pro-14",
+			"label": "MacBook Pro 14-inch",
+			"family": "Laptops",
+			"variants": [
+				{
+					"id": "macbook-pro-14-silver",
+					"color": "Silver",
+					"orientation": null,
+					"file": "macbook-pro-14/silver.png",
+					"canvasWidth": 3860,
+					"canvasHeight": 2540,
+					"screen": {
+						"x": 418,
+						"y": 288,
+						"width": 3024,
+						"height": 1964
+					}
+				},
+				{
+					"id": "macbook-pro-14-space-black",
+					"color": "Space Black",
+					"orientation": null,
+					"file": "macbook-pro-14/space-black.png",
+					"canvasWidth": 3860,
+					"canvasHeight": 2540,
+					"screen": {
+						"x": 418,
+						"y": 288,
+						"width": 3024,
+						"height": 1964
+					}
+				}
+			]
+		},
+		{
+			"id": "macbook-pro-16",
+			"label": "MacBook Pro 16-inch",
+			"family": "Laptops",
+			"variants": [
+				{
+					"id": "macbook-pro-16-silver",
+					"color": "Silver",
+					"orientation": null,
+					"file": "macbook-pro-16/silver.png",
+					"canvasWidth": 4260,
+					"canvasHeight": 2840,
+					"screen": {
+						"x": 402,
+						"y": 303,
+						"width": 3456,
+						"height": 2234
+					}
+				},
+				{
+					"id": "macbook-pro-16-space-black",
+					"color": "Space Black",
+					"orientation": null,
+					"file": "macbook-pro-16/space-black.png",
+					"canvasWidth": 4260,
+					"canvasHeight": 2840,
+					"screen": {
+						"x": 402,
+						"y": 303,
+						"width": 3456,
+						"height": 2234
+					}
+				}
+			]
+		},
+		{
+			"id": "macbook-neo",
+			"label": "MacBook Neo",
+			"family": "Laptops",
+			"variants": [
+				{
+					"id": "macbook-neo-blush",
+					"color": "Blush",
+					"orientation": null,
+					"file": "macbook-neo/blush.png",
+					"canvasWidth": 3220,
+					"canvasHeight": 2100,
+					"screen": {
+						"x": 406,
+						"y": 297,
+						"width": 2408,
+						"height": 1506
+					}
+				},
+				{
+					"id": "macbook-neo-citrus",
+					"color": "Citrus",
+					"orientation": null,
+					"file": "macbook-neo/citrus.png",
+					"canvasWidth": 3220,
+					"canvasHeight": 2100,
+					"screen": {
+						"x": 406,
+						"y": 297,
+						"width": 2408,
+						"height": 1506
+					}
+				},
+				{
+					"id": "macbook-neo-indigo",
+					"color": "Indigo",
+					"orientation": null,
+					"file": "macbook-neo/indigo.png",
+					"canvasWidth": 3220,
+					"canvasHeight": 2100,
+					"screen": {
+						"x": 406,
+						"y": 297,
+						"width": 2408,
+						"height": 1506
+					}
+				},
+				{
+					"id": "macbook-neo-silver",
+					"color": "Silver",
+					"orientation": null,
+					"file": "macbook-neo/silver.png",
+					"canvasWidth": 3220,
+					"canvasHeight": 2100,
+					"screen": {
+						"x": 406,
+						"y": 297,
+						"width": 2408,
+						"height": 1506
+					}
+				}
+			]
+		},
+		{
+			"id": "studio-display",
+			"label": "Studio Display",
+			"family": "Desktops",
+			"variants": [
+				{
+					"id": "studio-display-on-dark-background",
+					"color": "On Dark Background",
+					"orientation": null,
+					"file": "studio-display/on-dark-background.png",
+					"canvasWidth": 5400,
+					"canvasHeight": 4160,
+					"screen": {
+						"x": 140,
+						"y": 140,
+						"width": 5120,
+						"height": 2880
+					}
+				},
+				{
+					"id": "studio-display-on-light-background",
+					"color": "On Light Background",
+					"orientation": null,
+					"file": "studio-display/on-light-background.png",
+					"canvasWidth": 5400,
+					"canvasHeight": 4160,
+					"screen": {
+						"x": 140,
+						"y": 140,
+						"width": 5120,
+						"height": 2880
+					}
+				}
+			]
+		},
+		{
+			"id": "studio-display-xdr",
+			"label": "Studio Display XDR",
+			"family": "Desktops",
+			"variants": [
+				{
+					"id": "studio-display-xdr-on-dark-background",
+					"color": "On Dark Background",
+					"orientation": null,
+					"file": "studio-display-xdr/on-dark-background.png",
+					"canvasWidth": 5400,
+					"canvasHeight": 4160,
+					"screen": {
+						"x": 140,
+						"y": 140,
+						"width": 5120,
+						"height": 2880
+					}
+				},
+				{
+					"id": "studio-display-xdr-on-light-background",
+					"color": "On Light Background",
+					"orientation": null,
+					"file": "studio-display-xdr/on-light-background.png",
+					"canvasWidth": 5400,
+					"canvasHeight": 4160,
+					"screen": {
+						"x": 140,
+						"y": 140,
+						"width": 5120,
+						"height": 2880
+					}
+				}
+			]
+		}
+	]
+}

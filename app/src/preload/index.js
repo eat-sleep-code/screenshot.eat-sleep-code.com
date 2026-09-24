@@ -13,6 +13,10 @@ const api = {
 		update: (id, definition) => ipcRenderer.invoke("presets:update", id, definition),
 		remove: (id) => ipcRenderer.invoke("presets:delete", id),
 	},
+	deviceFrames: {
+		list: () => ipcRenderer.invoke("deviceFrames:list"),
+		saveMockup: (outputDir, filename, buffer) => ipcRenderer.invoke("deviceFrames:saveMockup", { outputDir, filename, buffer }),
+	},
 	output: {
 		chooseFolder: () => ipcRenderer.invoke("output:chooseFolder"),
 		getLast: () => ipcRenderer.invoke("output:getLast"),

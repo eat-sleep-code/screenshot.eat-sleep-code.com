@@ -7,6 +7,13 @@ import OutputFolder from "./output-folder.jsx";
 import ProgressList from "./progress-list.jsx";
 import ThumbnailGallery from "./thumbnail-gallery.jsx";
 import { useTranslation } from "../../hooks/use-translation.jsx";
+import {
+	compositeDeviceMockup,
+	findDeviceFrameVariant,
+	matchOrientation,
+	orientationFromLabel,
+	withFilenameSuffix,
+} from "../../lib/device-mockup.js";
 
 const DEFAULT_OPTIONS = {
 	fullPage: false,
@@ -14,12 +21,14 @@ const DEFAULT_OPTIONS = {
 	settleDelayMs: 500,
 	injectCss: "",
 	injectJs: "",
+	deviceMockup: { enabled: false, variantId: null },
 };
 
 export default function CaptureView() {
 	const t = useTranslation();
 	const [url, setUrl] = useState("");
 	const [presets, setPresets] = useState([]);
+	const [deviceFrames, setDeviceFrames] = useState([]);
 	const [selections, setSelections] = useState([]);
 	const [options, setOptions] = useState(DEFAULT_OPTIONS);
 	const [outputDir, setOutputDir] = useState(null);
@@ -37,6 +46,7 @@ export default function CaptureView() {
 	useEffect(() => {
 		loadPresets();
 		window.deviceScreenshotApi.output.getLast().then(setOutputDir);
+		window.deviceScreenshotApi.deviceFrames.list().then(setDeviceFrames);
 	}, [loadPresets]);
 
 	useEffect(() => {
@@ -90,9 +100,12 @@ export default function CaptureView() {
 		);
 
 		const unsubscribe = window.deviceScreenshotApi.capture.onProgress((update) => {
-			setProgressItems((current) =>
-				current.map((item) => (item.label === update.label ? { ...item, ...update } : item))
-			);
+			setProgressItems((current) => {
+				const exists = current.some((item) => item.label === update.label);
+				return exists
+					? current.map((item) => (item.label === update.label ? { ...item, ...update } : item))
+					: [...current, update];
+			});
 		});
 
 		try {
@@ -102,12 +115,49 @@ export default function CaptureView() {
 				outputDir,
 				options,
 			});
-			setResults(outcome);
-			if (outcome.some((result) => result.ok)) setActiveStage("results");
+			const finalResults = await generateMockups(outcome);
+			setResults(finalResults);
+			if (finalResults.some((result) => result.ok)) setActiveStage("results");
 		} finally {
 			unsubscribe();
 			setCapturing(false);
 		}
+	}
+
+	async function generateMockups(outcome) {
+		if (!options.deviceMockup.enabled) return outcome;
+		const chosen = findDeviceFrameVariant(deviceFrames, options.deviceMockup.variantId);
+		if (!chosen) return outcome;
+
+		const withMockups = [...outcome];
+		for (const result of outcome) {
+			if (!result.ok) continue;
+			const variant = matchOrientation(chosen.device, chosen.variant, orientationFromLabel(result.label));
+			const mockupLabel = `${result.label} — ${variant.color} mockup`;
+			setProgressItems((current) => [...current, { label: mockupLabel, status: "capturing" }]);
+			try {
+				const blob = await compositeDeviceMockup({
+					screenshotUrl: result.fileUrl,
+					frameUrl: variant.previewUrl,
+					canvasWidth: variant.canvasWidth,
+					canvasHeight: variant.canvasHeight,
+					screen: variant.screen,
+				});
+				const buffer = await blob.arrayBuffer();
+				const filename = withFilenameSuffix(result.filePath, variant.id);
+				const saved = await window.deviceScreenshotApi.deviceFrames.saveMockup(outputDir, filename, buffer);
+				setProgressItems((current) =>
+					current.map((item) => (item.label === mockupLabel ? { ...item, status: "done" } : item))
+				);
+				withMockups.push({ label: mockupLabel, filePath: saved.filePath, fileUrl: saved.fileUrl, ok: true });
+			} catch (error) {
+				setProgressItems((current) =>
+					current.map((item) => (item.label === mockupLabel ? { ...item, status: "error", message: error.message } : item))
+				);
+				withMockups.push({ label: mockupLabel, ok: false, message: error.message });
+			}
+		}
+		return withMockups;
 	}
 
 	const canCapture = Boolean(url) && selections.length > 0 && Boolean(outputDir) && !capturing;
@@ -158,7 +208,7 @@ export default function CaptureView() {
 						onPresetsChanged={loadPresets}
 					/>
 
-					<CaptureOptions options={options} onChange={setOptions} />
+					<CaptureOptions options={options} onChange={setOptions} deviceFrames={deviceFrames} />
 
 					<OutputFolder outputDir={outputDir} onChoose={handleChooseFolder} />
 

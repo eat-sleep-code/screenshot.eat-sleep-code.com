@@ -24,6 +24,10 @@ asarUnpack:
 extraResources:
   - from: data/presets.json
     to: presets.json
+  - from: data/device-frames.json
+    to: device-frames.json
+  - from: resources/devices/frames
+    to: device-frames
 win:
   target:
     - nsis
