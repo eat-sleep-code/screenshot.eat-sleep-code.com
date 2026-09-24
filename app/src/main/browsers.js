@@ -19,8 +19,32 @@ function markerPath() {
 	return join(browsersCacheDir(), ".installed");
 }
 
+// Separate from markerPath(): the browser binaries can be fully installed
+// while the Linux system libraries they need (nss, atk, gtk, etc., via
+// `playwright install-deps`) are still missing — that failure is invisible
+// to an existsSync() check on the binaries themselves. Tracking it
+// separately means anyone who already has browsers installed (including
+// from before this deps step existed) still gets sent through the deps
+// install exactly once, instead of the gate short-circuiting on the old
+// marker and never running it.
+function depsMarkerPath() {
+	return join(browsersCacheDir(), ".deps-installed");
+}
+
 export function areBrowsersInstalled() {
-	return existsSync(markerPath());
+	if (!existsSync(markerPath())) return false;
+	// The marker alone isn't proof the binaries are actually usable — a
+	// partial/corrupted install (or one made before this env var wiring
+	// existed) can leave it behind with no browser at the expected path.
+	// Checking the real executablePath()s means a broken install is
+	// detected and re-run instead of silently stuck forever.
+	try {
+		if (!existsSync(chromium.executablePath()) || !existsSync(webkit.executablePath())) return false;
+	} catch {
+		return false;
+	}
+	if (platform() === "linux" && !existsSync(depsMarkerPath())) return false;
+	return true;
 }
 
 function driverCliPath() {
@@ -64,12 +88,17 @@ function installLinuxDeps(onProgress) {
 
 		child.on("error", (err) => {
 			onProgress?.(`Couldn't run the system dependency installer (${err.message}). If screenshots fail to launch, run: sudo npx playwright install-deps`);
+			// Mark it attempted anyway — if pkexec/PolicyKit just isn't present
+			// on this system, retrying it on every launch would trap the user
+			// in the install screen forever with no way to get past it.
+			writeFileSync(depsMarkerPath(), "failed");
 			resolve();
 		});
 		child.on("close", (code) => {
 			if (code !== 0) {
 				onProgress?.("System dependency install didn't complete. If screenshots fail to launch, run: sudo npx playwright install-deps");
 			}
+			writeFileSync(depsMarkerPath(), code === 0 ? new Date().toISOString() : "failed");
 			resolve();
 		});
 	});
