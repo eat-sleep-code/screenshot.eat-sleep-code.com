@@ -67,6 +67,8 @@ export default {
 		tabResults: "Results",
 		progressTitle: "Progress",
 		resultsTitle: "Results",
+		resultsScreenCaptures: "Screen captures",
+		resultsDeviceOverlays: "Device overlays",
 		statusLoading: "Loading",
 		statusScrolling: "Scrolling",
 		statusCapturing: "Capturing",

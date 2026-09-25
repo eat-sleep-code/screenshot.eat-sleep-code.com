@@ -156,7 +156,12 @@ export default function CaptureView() {
 				if (!variant) continue;
 
 				const mockupLabel = `${result.label} — ${color} overlay`;
-				const mockupMeta = { kind: "device", presetId: selection.presetId, orientation: selection.orientation };
+				const mockupMeta = {
+					kind: "device",
+					presetId: selection.presetId,
+					orientation: selection.orientation,
+					isOverlay: true,
+				};
 				setProgressItems((current) => [...current, { label: mockupLabel, status: "capturing", ...mockupMeta }]);
 				try {
 					const blob = await compositeDeviceMockup({

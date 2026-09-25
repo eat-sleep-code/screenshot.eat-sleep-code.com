@@ -29,7 +29,14 @@ export function getResultIcon({ kind, presetId, orientation }, presets) {
 	return { Icon: isLaptop ? Laptop : Monitor, rotate: false };
 }
 
-/** Strips the trailing " (portrait)"/" (landscape)" suffix now shown as an icon instead. */
+/**
+ * Strips the " (portrait)"/" (landscape)" marker now shown as an icon instead.
+ * It can appear anywhere in the label, not just at the end — a device-overlay
+ * label like "iPhone 18 Pro (portrait) — Midnight overlay" has it mid-string.
+ */
 export function stripOrientationSuffix(label) {
-	return label.replace(/\s*\((?:portrait|landscape)\)\s*$/i, "");
+	return label
+		.replace(/\s*\((?:portrait|landscape)\)/gi, "")
+		.replace(/\s{2,}/g, " ")
+		.trim();
 }
