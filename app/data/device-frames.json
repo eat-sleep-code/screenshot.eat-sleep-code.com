@@ -811,6 +811,111 @@
 					}
 				}
 			]
+		},
+		{
+			"id": "pixel-10",
+			"label": "Pixel 10",
+			"family": "Phones",
+			"variants": [
+				{
+					"id": "pixel-10-default-landscape",
+					"color": "Default",
+					"orientation": "landscape",
+					"file": "pixel-10/default-landscape.png",
+					"canvasWidth": 800,
+					"canvasHeight": 379,
+					"screen": {
+						"x": 18,
+						"y": 18,
+						"width": 763,
+						"height": 340
+					}
+				},
+				{
+					"id": "pixel-10-default-portrait",
+					"color": "Default",
+					"orientation": "portrait",
+					"file": "pixel-10/default-portrait.png",
+					"canvasWidth": 379,
+					"canvasHeight": 800,
+					"screen": {
+						"x": 18,
+						"y": 19,
+						"width": 340,
+						"height": 763
+					}
+				}
+			]
+		},
+		{
+			"id": "pixel-10-pro",
+			"label": "Pixel 10 Pro",
+			"family": "Phones",
+			"variants": [
+				{
+					"id": "pixel-10-pro-default-landscape",
+					"color": "Default",
+					"orientation": "landscape",
+					"file": "pixel-10-pro/default-landscape.png",
+					"canvasWidth": 800,
+					"canvasHeight": 380,
+					"screen": {
+						"x": 15,
+						"y": 15,
+						"width": 771,
+						"height": 346
+					}
+				},
+				{
+					"id": "pixel-10-pro-default-portrait",
+					"color": "Default",
+					"orientation": "portrait",
+					"file": "pixel-10-pro/default-portrait.png",
+					"canvasWidth": 380,
+					"canvasHeight": 800,
+					"screen": {
+						"x": 15,
+						"y": 14,
+						"width": 346,
+						"height": 771
+					}
+				}
+			]
+		},
+		{
+			"id": "pixel-10-pro-fold",
+			"label": "Pixel 10 Pro Fold",
+			"family": "Foldables",
+			"variants": [
+				{
+					"id": "pixel-10-pro-fold-default-landscape",
+					"color": "Default",
+					"orientation": "landscape",
+					"file": "pixel-10-pro-fold/default-landscape.png",
+					"canvasWidth": 800,
+					"canvasHeight": 395,
+					"screen": {
+						"x": 21,
+						"y": 26,
+						"width": 758,
+						"height": 346
+					}
+				},
+				{
+					"id": "pixel-10-pro-fold-default-portrait",
+					"color": "Default",
+					"orientation": "portrait",
+					"file": "pixel-10-pro-fold/default-portrait.png",
+					"canvasWidth": 395,
+					"canvasHeight": 800,
+					"screen": {
+						"x": 26,
+						"y": 21,
+						"width": 346,
+						"height": 758
+					}
+				}
+			]
 		}
 	]
 }
