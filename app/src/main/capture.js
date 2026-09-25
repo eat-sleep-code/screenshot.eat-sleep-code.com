@@ -49,6 +49,48 @@ const VIRTUAL_FULL_PAGE_DEVICES = [
 	},
 ];
 
+// Playwright's bundled WebKit (used for the iPhone/iPad presets, for
+// authentic Safari rendering) ships without a Web Audio backend on some
+// platforms: window.AudioContext is simply undefined. Sites that assume
+// it exists (common in mobile-first games) crash on `new AudioContext()`
+// during startup, aborting their whole render before anything but the
+// page background ever shows up — producing a blank capture with no
+// error visible to the user. A minimal stub that accepts any
+// construction/method call keeps that startup code from throwing, so the
+// page can render normally; it's only installed when a real
+// AudioContext isn't already present, so Chromium (which has one) is
+// unaffected.
+function installAudioContextStub() {
+	if (typeof window.AudioContext === "function" || typeof window.webkitAudioContext === "function") return;
+	const stubHandler = {
+		get(target, prop) {
+			if (prop === "then" || prop === "toJSON") return undefined;
+			if (prop in target) return target[prop];
+			return (..._args) => new Proxy({}, stubHandler);
+		},
+	};
+	class AudioContextStub {
+		constructor() {
+			return new Proxy(
+				{
+					state: "running",
+					currentTime: 0,
+					sampleRate: 44100,
+					destination: new Proxy({}, stubHandler),
+					resume: () => Promise.resolve(),
+					suspend: () => Promise.resolve(),
+					close: () => Promise.resolve(),
+					addEventListener: () => {},
+					removeEventListener: () => {},
+				},
+				stubHandler
+			);
+		}
+	}
+	window.AudioContext = AudioContextStub;
+	window.webkitAudioContext = AudioContextStub;
+}
+
 async function scrollThroughPage(page) {
 	await page.evaluate(async () => {
 		const step = Math.max(200, window.innerHeight);
@@ -75,6 +117,7 @@ async function scrollThroughPage(page) {
 async function captureOne(browser, contextOptions, { url, options, storageState, label, onProgress, filePath, fullPage, meta }) {
 	const context = await browser.newContext({ ...contextOptions, storageState });
 	try {
+		await context.addInitScript(installAudioContextStub);
 		const page = await context.newPage();
 		onProgress?.({ label, status: "loading", ...meta });
 		await page.goto(url, { waitUntil: "load", timeout: 60000 });
