@@ -916,6 +916,125 @@
 					}
 				}
 			]
+		},
+		{
+			"id": "ipad-a16",
+			"label": "iPad",
+			"family": "Tablets",
+			"variants": [
+				{
+					"id": "ipad-a16-blue-landscape",
+					"color": "Blue",
+					"orientation": "landscape",
+					"file": "ipad-a16/blue-landscape.png",
+					"canvasWidth": 2593,
+					"canvasHeight": 1874,
+					"screen": {
+						"x": 119,
+						"y": 119,
+						"width": 2360,
+						"height": 1640
+					}
+				},
+				{
+					"id": "ipad-a16-blue-portrait",
+					"color": "Blue",
+					"orientation": "portrait",
+					"file": "ipad-a16/blue-portrait.png",
+					"canvasWidth": 1874,
+					"canvasHeight": 2593,
+					"screen": {
+						"x": 115,
+						"y": 119,
+						"width": 1640,
+						"height": 2360
+					}
+				},
+				{
+					"id": "ipad-a16-pink-landscape",
+					"color": "Pink",
+					"orientation": "landscape",
+					"file": "ipad-a16/pink-landscape.png",
+					"canvasWidth": 2593,
+					"canvasHeight": 1874,
+					"screen": {
+						"x": 119,
+						"y": 119,
+						"width": 2360,
+						"height": 1640
+					}
+				},
+				{
+					"id": "ipad-a16-pink-portrait",
+					"color": "Pink",
+					"orientation": "portrait",
+					"file": "ipad-a16/pink-portrait.png",
+					"canvasWidth": 1874,
+					"canvasHeight": 2593,
+					"screen": {
+						"x": 115,
+						"y": 119,
+						"width": 1640,
+						"height": 2360
+					}
+				},
+				{
+					"id": "ipad-a16-silver-landscape",
+					"color": "Silver",
+					"orientation": "landscape",
+					"file": "ipad-a16/silver-landscape.png",
+					"canvasWidth": 2593,
+					"canvasHeight": 1874,
+					"screen": {
+						"x": 119,
+						"y": 119,
+						"width": 2360,
+						"height": 1640
+					}
+				},
+				{
+					"id": "ipad-a16-silver-portrait",
+					"color": "Silver",
+					"orientation": "portrait",
+					"file": "ipad-a16/silver-portrait.png",
+					"canvasWidth": 1874,
+					"canvasHeight": 2593,
+					"screen": {
+						"x": 115,
+						"y": 119,
+						"width": 1640,
+						"height": 2360
+					}
+				},
+				{
+					"id": "ipad-a16-yellow-landscape",
+					"color": "Yellow",
+					"orientation": "landscape",
+					"file": "ipad-a16/yellow-landscape.png",
+					"canvasWidth": 2593,
+					"canvasHeight": 1874,
+					"screen": {
+						"x": 119,
+						"y": 119,
+						"width": 2360,
+						"height": 1640
+					}
+				},
+				{
+					"id": "ipad-a16-yellow-portrait",
+					"color": "Yellow",
+					"orientation": "portrait",
+					"file": "ipad-a16/yellow-portrait.png",
+					"canvasWidth": 1874,
+					"canvasHeight": 2593,
+					"screen": {
+						"x": 115,
+						"y": 119,
+						"width": 1640,
+						"height": 2360
+					}
+				}
+			]
 		}
 	]
 }

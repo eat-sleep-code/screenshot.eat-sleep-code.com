@@ -21,6 +21,7 @@ const DEVICE_META = {
 	"iphone-duo": { label: "iPhone Duo", family: "Foldables" },
 	"ipad-pro-11": { label: 'iPad Pro 11"', family: "Tablets" },
 	"ipad-pro-13": { label: 'iPad Pro 13"', family: "Tablets" },
+	"ipad-a16": { label: "iPad", family: "Tablets" },
 	"pixel-10": { label: "Pixel 10", family: "Phones" },
 	"pixel-10-pro": { label: "Pixel 10 Pro", family: "Phones" },
 	"pixel-10-pro-fold": { label: "Pixel 10 Pro Fold", family: "Foldables" },

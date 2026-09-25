@@ -71,6 +71,20 @@
 			"userAgent": "Mozilla/5.0 (Linux; Android 14; Pixel Fold) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.8010.12 Mobile Safari/537.36"
 		},
 		{
+			"id": "ipad-a16",
+			"name": "iPad",
+			"family": "Tablets",
+			"builtIn": true,
+			"deviceFrameId": "ipad-a16",
+			"width": 820,
+			"height": 1180,
+			"deviceScaleFactor": 2,
+			"isMobile": true,
+			"hasTouch": true,
+			"engine": "webkit",
+			"userAgent": "Mozilla/5.0 (iPad; CPU OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1"
+		},
+		{
 			"id": "ipad-pro-11",
 			"name": "iPad Pro 11\"",
 			"family": "Tablets",
