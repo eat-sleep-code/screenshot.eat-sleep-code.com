@@ -119,6 +119,8 @@ export default function SettingsView() {
 					</p>
 				) : null}
 
+				<hr className="mt-4 border-neutral-200 dark:border-neutral-800" />
+
 				<div className="mt-4 flex gap-4 text-sm">
 					<ExternalLink href="https://eat-sleep-code.com/privacy">{t("about.privacy")}</ExternalLink>
 					<ExternalLink href="https://eat-sleep-code.com/terms-of-use">{t("about.terms")}</ExternalLink>
