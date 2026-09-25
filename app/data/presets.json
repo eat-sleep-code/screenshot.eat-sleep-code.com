@@ -98,7 +98,7 @@
 		{
 			"id": "laptop",
 			"name": "Laptop",
-			"family": "Desktop",
+			"family": "Computer",
 			"builtIn": true,
 			"deviceFrameId": "macbook-air-13",
 			"width": 1440,
@@ -112,7 +112,7 @@
 		{
 			"id": "desktop-fhd",
 			"name": "Desktop (1080p)",
-			"family": "Desktop",
+			"family": "Computer",
 			"builtIn": true,
 			"deviceFrameId": "studio-display",
 			"width": 1920,
