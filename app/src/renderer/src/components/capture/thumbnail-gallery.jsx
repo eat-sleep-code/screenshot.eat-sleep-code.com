@@ -25,7 +25,7 @@ function ThumbnailGrid({ results, presets, t }) {
 							alt={result.label}
 							className={`w-full h-32 bg-neutral-100 dark:bg-neutral-900 ${
 								result.kind === "device" ? "object-contain" : "object-cover"
-							}`}
+							} ${result.isOverlay ? "p-1" : ""}`}
 						/>
 						<button
 							type="button"
@@ -59,20 +59,19 @@ export default function ThumbnailGallery({ results, presets }) {
 
 	return (
 		<div className="space-y-6">
-			<h2 className="text-sm font-semibold">{t("capture.resultsTitle")}</h2>
 			{captures.length > 0 ? (
 				<div>
-					<h3 className="text-xs font-semibold uppercase tracking-wide text-neutral-500 dark:text-neutral-400 mb-2">
+					<h2 className="text-sm font-semibold uppercase tracking-wide text-accent mb-2">
 						{t("capture.resultsScreenCaptures")}
-					</h3>
+					</h2>
 					<ThumbnailGrid results={captures} presets={presets} t={t} />
 				</div>
 			) : null}
 			{overlays.length > 0 ? (
 				<div>
-					<h3 className="text-xs font-semibold uppercase tracking-wide text-neutral-500 dark:text-neutral-400 mb-2">
+					<h2 className="text-sm font-semibold uppercase tracking-wide text-accent mb-2">
 						{t("capture.resultsDeviceOverlays")}
-					</h3>
+					</h2>
 					<ThumbnailGrid results={overlays} presets={presets} t={t} />
 				</div>
 			) : null}
