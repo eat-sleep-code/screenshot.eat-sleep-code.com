@@ -59,20 +59,21 @@ export default function ThumbnailGallery({ results, presets }) {
 
 	return (
 		<div className="space-y-6">
-			{captures.length > 0 ? (
-				<div>
-					<h2 className="text-sm font-semibold uppercase tracking-wide text-accent mb-2">
-						{t("capture.resultsScreenCaptures")}
-					</h2>
-					<ThumbnailGrid results={captures} presets={presets} t={t} />
-				</div>
-			) : null}
 			{overlays.length > 0 ? (
 				<div>
 					<h2 className="text-sm font-semibold uppercase tracking-wide text-accent mb-2">
 						{t("capture.resultsDeviceOverlays")}
 					</h2>
 					<ThumbnailGrid results={overlays} presets={presets} t={t} />
+				</div>
+			) : null}
+
+			{captures.length > 0 ? (
+				<div>
+					<h2 className="text-sm font-semibold uppercase tracking-wide text-accent mb-2">
+						{t("capture.resultsScreenCaptures")}
+					</h2>
+					<ThumbnailGrid results={captures} presets={presets} t={t} />
 				</div>
 			) : null}
 		</div>
